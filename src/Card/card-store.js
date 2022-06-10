@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { addToStore, updateItemInStore, removeItemFromStore } from '../helpers/store-helpers.js';
 
 const store = writable([
     {
@@ -18,27 +19,10 @@ const store = writable([
 export const cards = {
     subscribe: store.subscribe,
     unsubscribe: store.unsubscribe,
-    add: (item) => {
-        // TODO(KNR): use something like a GUID as ID
-        item.id = Math.random().toString();
-        return meetups.update(items => {
-            return [...items, item];
-        });
-    },
-    update: (id, data) => {
-        store.update(items => {
-            const index = items.findIndex(m => m.id === id);
-            const updatedItem = {...items[index], ...data};
-            const updatedItems = [...items];
-            updatedItems[index] = updatedItem;
-            return updatedItems;
-        });
-    },
-    remove: (id) => {
-        store.update(items => {
-            return items.filter(i => i.id !== id);
-        });
-    },
+    add: (item) => { addToStore(item, store); },
+    update: (id, data) => { updateItemInStore(id, data, store); },
+    remove: (id) => { removeItemFromStore(id, store); },
+    // TEMPORARILY(KNR): the following code just demonstrates how it would be done:
     toggleSomeProperty: (id) => {
         store.update(items => {
             const index = items.findIndex(m => m.id === id);
