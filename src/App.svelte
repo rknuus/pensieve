@@ -1,8 +1,10 @@
 <script>
-	import Card from './Card/Card.svelte';
+	import Stack from './Stack/Stack.svelte';
 </script>
 
 <style>
 </style>
 
-<Card id="cardA" />
+<Stack id="stackA" --top="50px" --left="50px" />
+<Stack id="stackB" --top="50px" --left="450px"  />
+<Stack id="stackC" --top="50px" --left="850px"  />
