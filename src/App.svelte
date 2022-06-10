@@ -1,11 +1,8 @@
 <script>
-	export let name;
+	import Card from './Card/Card.svelte';
 </script>
 
 <style>
-	h1 {
-		color: purple;
-	}
 </style>
 
-<h1>Hello {name}!</h1>
+<Card id="cardA" />
