@@ -32,7 +32,12 @@
   height: 112px;
   aspect-ratio: 1.7857;
 
-  padding: 5px;
+  position: absolute;
+  /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
+  top: var(--top);
+  left: var(--left);
+
+  /*padding: 5px;*/
 
   box-shadow: 1px 1px 3px rgba(0,0,0,.25);
   background-color: white;  /* prevent cards from being transparent */

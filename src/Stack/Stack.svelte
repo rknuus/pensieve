@@ -28,7 +28,7 @@
 </style>
 
 <div class="stack">
-    {#each cards as cardId}
-        <Card id={cardId} />
+    {#each cards as cardId, i}
+        <Card id={cardId} --top="{i * 5}px" --left="{i * 5}px" />
     {/each}
 </div>
