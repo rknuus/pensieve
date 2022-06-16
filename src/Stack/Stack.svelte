@@ -1,12 +1,14 @@
 <script>
   import { createEventDispatcher, onDestroy } from 'svelte';
   import { stacks } from './stack-store.js';
+  import { display } from '../helpers/display-store.js';
   import Card from '../Card/Card.svelte';
   import PlaceholderCard from '../Card/PlaceholderCard.svelte';
 
   export let id;
 
   let cards;
+  let stackData;
 
   const stack_offset_factor = 5;
   const dispatch = createEventDispatcher();
@@ -15,8 +17,9 @@
 
   const unsubscribeStacks = stacks.subscribe(items => {
     const stack = items.find(i => i.id === id);
-    cards = stack.cards;
     console.assert(stack, 'stack with ID %s not found in stack store', id);
+    cards = stack.cards;
+    stackData = items;
   });
 
   onDestroy(() => {
@@ -24,6 +27,15 @@
       unsubscribeStacks();
     }
   });
+
+  function onDrop(event) {
+    // getting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
+    const json = event.dataTransfer.getData("text/plain");
+    const eventData = JSON.parse(json);
+    stacks.moveCard(eventData.cardId, eventData.sourceId, id);
+    display.stopDragging();
+    console.debug('dropped item ' + eventData.cardId + ' onto target stack ' + id);
+  }
 </script>
 
 <style>
@@ -40,5 +52,5 @@
     <!-- TODO(KNR): because the condition depends on the loop variable, I don't know how to factor it out into a function or a $: expression -->
     <Card id={cardId} parentId={id} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
   {/each}
-  <PlaceholderCard parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" />
+  <PlaceholderCard parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" on:drop="{onDrop}" />
 </div>

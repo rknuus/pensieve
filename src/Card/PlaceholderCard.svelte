@@ -39,6 +39,6 @@
 </style>
 
 {#if showAlways || (highlightDropZones && sourceId !== parentId)}
-  <div class="placeholdercard">
+  <div class="placeholdercard" on:dragover|preventDefault on:drop|preventDefault>
   </div>
 {/if}

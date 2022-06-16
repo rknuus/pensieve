@@ -11,6 +11,7 @@
   const dispatch = createEventDispatcher();
 
   console.assert(id, 'card has no valid ID');
+  console.assert(parentId, 'card has no valid parent ID');
 
   const unsubscribe = cards.subscribe(items => {
     const card = items.find(i => i.id === id);
@@ -26,17 +27,18 @@
 
   function onDragStart(event) {
     // setting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
-    const data = {id: id, sourceId: parentId};
+    const data = {cardId: id, sourceId: parentId};
     event.dataTransfer.setData('text/plain', JSON.stringify(data));
-    console.log('starting to drag item ' + id);
+    event.dataTransfer.effectAllowed = 'move';
+    console.debug('starting to drag item ' + id + ' from source stack ' + parentId);
     // TODO(KNR): updating the store interrupts the drag operation
     display.startDragging(parentId);
   }
 
   function onDragEnd(event) {
-    console.log('stop dragging item ' + id);
+    console.debug('stop dragging item ' + id);
     display.stopDragging();
-    event.dataTransfer.clearData();
+    // Apparently we don't have to clear the transfer data
   }
 </script>
 
