@@ -1,8 +1,10 @@
 <script>
   import { createEventDispatcher, onDestroy } from 'svelte';
   import { cards } from './card-store.js';
+  import { display } from '../helpers/display-store.js';
 
   export let id;
+  export let parentId;
 
   let renderedContent;
 
@@ -21,9 +23,25 @@
       unsubscribe();
     }
   });
+
+  function onDragStart(event) {
+    // setting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
+    const data = {id: id, sourceId: parentId};
+    event.dataTransfer.setData('text/plain', JSON.stringify(data));
+    console.log('starting to drag item ' + id);
+    // TODO(KNR): updating the store interrupts the drag operation
+    display.startDragging(parentId);
+  }
+
+  function onDragEnd(event) {
+    console.log('stop dragging item ' + id);
+    display.stopDragging();
+    event.dataTransfer.clearData();
+  }
 </script>
 
 <style>
+/* TODO(KNR): alternatively we could set the background image dynamically and manage the background-line-dinstance variable in JS instead of CSS, see https://svelte.dev/repl/8123d474edb04f198c3b83363716a709?version=3.23.2 */
 :root {
   --background-line-distance: 1.2rem;
 }
@@ -37,10 +55,10 @@
   top: var(--top);
   left: var(--left);
 
-  /*padding: 5px;*/
+  cursor: move;
 
   box-shadow: 1px 1px 3px rgba(0,0,0,.25);
-  background-color: white;  /* prevent cards from being transparent */
+  background-color: white;  /* avoid cards being transparent */
   /* borrowed from https://codepen.io/teddyzetterlund/pen/YPjEzP */
   background-image:
   linear-gradient(180deg,
@@ -54,10 +72,10 @@
   #DDD 1px,
   #DDD calc(var(--background-line-distance) + 1px));
 
-  overflow: hidden;  /* only show text within the card borders */
+  overflow: hidden;  /* only show text within the card borders unless the card is unfolded by JS */
 }
 </style>
 
-<div class="card">
+<div class="card" draggable={true} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}">
   {@html renderedContent}
 </div>
