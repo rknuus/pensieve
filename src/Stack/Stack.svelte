@@ -3,7 +3,7 @@
   import { stacks } from './stack-store.js';
   import { display } from '../helpers/display-store.js';
   import Card from '../Card/Card.svelte';
-  import PlaceholderCard from '../Card/PlaceholderCard.svelte';
+  import CardDropZone from '../Card/CardDropZone.svelte';
 
   export let id;
 
@@ -52,5 +52,5 @@
     <!-- TODO(KNR): because the condition depends on the loop variable, I don't know how to factor it out into a function or a $: expression -->
     <Card id={cardId} parentId={id} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
   {/each}
-  <PlaceholderCard parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" on:drop="{onDrop}" />
+  <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" on:drop="{onDrop}" />
 </div>
