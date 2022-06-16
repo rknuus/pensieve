@@ -1,31 +1,31 @@
 <script>
-    import { createEventDispatcher, onDestroy } from 'svelte';
-    import { cards } from './card-store.js';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cards } from './card-store.js';
 
-    export let id;
+  export let id;
 
-    let renderedContent;
+  let renderedContent;
 
-    const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher();
 
-    console.assert(id, 'card has no valid ID');
+  console.assert(id, 'card has no valid ID');
 
-    const unsubscribe = cards.subscribe(items => {
-        const card = items.find(i => i.id === id);
-        console.assert(card, 'card with ID %s not found in card store', id);
-        renderedContent = card.renderedContent;
-    });
+  const unsubscribe = cards.subscribe(items => {
+    const card = items.find(i => i.id === id);
+    console.assert(card, 'card with ID %s not found in card store', id);
+    renderedContent = card.renderedContent;
+  });
 
-    onDestroy(() => {
-        if (unsubscribe) {
-            unsubscribe();
-        }
-    });
+  onDestroy(() => {
+    if (unsubscribe) {
+      unsubscribe();
+    }
+  });
 </script>
 
 <style>
 :root {
-    --background-line-distance: 1.2rem;
+  --background-line-distance: 1.2rem;
 }
 
 .card {
@@ -43,21 +43,21 @@
   background-color: white;  /* prevent cards from being transparent */
   /* borrowed from https://codepen.io/teddyzetterlund/pen/YPjEzP */
   background-image:
-    linear-gradient(180deg,
-      white var(--background-line-distance),
-      #F0A4A4 var(--background-line-distance),
-      #F0A4A4 calc(var(--background-line-distance) + 1px),
-      transparent 1px),
-    repeating-linear-gradient(180deg,
-      transparent,
-      transparent var(--background-line-distance),
-    #DDD 1px,
-    #DDD calc(var(--background-line-distance) + 1px));
+  linear-gradient(180deg,
+    white var(--background-line-distance),
+    #F0A4A4 var(--background-line-distance),
+    #F0A4A4 calc(var(--background-line-distance) + 1px),
+    transparent 1px),
+  repeating-linear-gradient(180deg,
+    transparent,
+    transparent var(--background-line-distance),
+  #DDD 1px,
+  #DDD calc(var(--background-line-distance) + 1px));
 
   overflow: hidden;  /* only show text within the card borders */
 }
 </style>
 
 <div class="card">
-    {@html renderedContent}
+  {@html renderedContent}
 </div>

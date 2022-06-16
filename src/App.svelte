@@ -1,5 +1,5 @@
 <script>
-	import Stack from './Stack/Stack.svelte';
+  import Stack from './Stack/Stack.svelte';
 </script>
 
 <style>
