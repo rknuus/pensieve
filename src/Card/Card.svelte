@@ -5,6 +5,7 @@
 
   export let id;
   export let parentId;
+  export let topCard;
 
   let renderedContent;
 
@@ -57,8 +58,6 @@
   top: var(--top);
   left: var(--left);
 
-  cursor: move;
-
   box-shadow: 1px 1px 3px rgba(0,0,0,.25);
   background-color: white;  /* avoid cards being transparent */
   /* borrowed from https://codepen.io/teddyzetterlund/pen/YPjEzP */
@@ -76,8 +75,12 @@
 
   overflow: hidden;  /* only show text within the card borders unless the card is unfolded by JS */
 }
+
+.draggable {
+  cursor: move;
+}
 </style>
 
-<div class="card" draggable={true} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}">
+<div class="card" class:draggable="{topCard}" draggable={topCard} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}">
   {@html renderedContent}
 </div>
