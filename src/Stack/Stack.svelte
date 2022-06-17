@@ -47,7 +47,7 @@
 
 <div class="stack">
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
   {/each}
   <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" on:drop="{onDrop}" />
 </div>
