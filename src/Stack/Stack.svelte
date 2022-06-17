@@ -8,7 +8,6 @@
   export let id;
 
   let cards;
-  let stackData;
 
   const stack_offset_factor = 5;
   const dispatch = createEventDispatcher();
@@ -19,7 +18,6 @@
     const stack = items.find(i => i.id === id);
     console.assert(stack, 'stack with ID %s not found in stack store', id);
     cards = stack.cards;
-    stackData = items;
   });
 
   onDestroy(() => {
@@ -49,7 +47,6 @@
 
 <div class="stack">
   {#each cards as cardId, i}
-    <!-- TODO(KNR): because the condition depends on the loop variable, I don't know how to factor it out into a function or a $: expression -->
     <Card id={cardId} parentId={id} topCard={i === cards.length - 1} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
   {/each}
   <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" on:drop="{onDrop}" />
