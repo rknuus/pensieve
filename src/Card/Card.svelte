@@ -6,6 +6,8 @@
   export let id;
   export let parentId;
   export let topCard;
+  export let draggable;
+  export let flipped = false;
 
   let renderedContent;
 
@@ -19,6 +21,8 @@
     console.assert(card, 'card with ID %s not found in card store', id);
     renderedContent = card.renderedContent;
   });
+
+  $: dragEnabled = draggable && topCard;
 
   onDestroy(() => {
     if (unsubscribe) {
@@ -57,6 +61,7 @@
   /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
   top: var(--top);
   left: var(--left);
+  z-index: var(--zIndex);
 
   box-shadow: 1px 1px 3px rgba(0,0,0,.25);
   background-color: white;  /* avoid cards being transparent */
@@ -79,8 +84,14 @@
 .draggable {
   cursor: move;
 }
+
+.flipped {
+    transform: translateY(112px) rotateX(-180deg);
+}
 </style>
 
-<div class="card" class:draggable="{topCard}" draggable={topCard} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}">
-  {@html renderedContent}
+<div class="card" class:flipped="{flipped}" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}">
+  {#if !flipped}
+    {@html renderedContent}
+  {/if}
 </div>
