@@ -86,7 +86,7 @@
 }
 
 .flipped {
-    transform: translateY(112px) rotateX(-180deg);
+    transform: rotateX(-180deg);
 }
 </style>
 

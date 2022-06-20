@@ -4,6 +4,11 @@
   import Card from '../Card/Card.svelte';
 
   export let id;
+  export let top;
+  export let left;
+
+  $: cardTop = parseInt(top);
+  $: cardLeft = parseInt(left);
 
   let cards;
 
@@ -36,6 +41,6 @@
 
 <div>
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} --top="{cardTop + i * stack_offset_factor}px" --left="{cardLeft + i * stack_offset_factor}px" />
   {/each}
 </div>
