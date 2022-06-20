@@ -6,10 +6,10 @@
 <style>
 </style>
 
-<Stack id="stackA" --top="50px" --left="50px" />
-<Stack id="stackB" --top="50px" --left="450px"  />
-<Stack id="stackC" --top="50px" --left="850px"  />
+<Stack id="stackA" top="50" left="50" />
+<Stack id="stackB" top="50" left="450" />
+<Stack id="stackC" top="50" left="850" />
 
-<Box id="boxA" --top="250px" --left="50px" />
-<Box id="boxB" --top="250px" --left="450px"  />
-<Box id="boxC" --top="250px" --left="850px"  />
+<Box id="boxA" selected={true} top="300" left="50" />
+<Box id="boxB" top="300" left="450" />
+<Box id="boxC" top="300" left="850" />

@@ -1,13 +1,16 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
-  import { boxes } from './box-store.js';
   import Card from '../Card/Card.svelte';
+  import { boxes } from './box-store.js';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
+  import { getCardOffset } from '../helpers/display-helpers.js';
 
   export let id;
+  export let top;
+  export let left;
 
   let cards;
 
-  const stack_offset_factor = 5;
   const dispatch = createEventDispatcher();
 
   console.assert(id, 'open cards has no valid ID');
@@ -26,16 +29,16 @@
 </script>
 
 <style>
-  .box {
+  .opencards {
     position: absolute;
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-    top: var(--top);
-    left: var(--left);
+/*    top: var(--top);
+    left: var(--left);*/
   }
 </style>
 
-<div>
+<div class="opencards" use:cssVariables={{top, left}}>
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} top="{getCardOffset(i)}" left="{getCardOffset(i)}" />
   {/each}
 </div>

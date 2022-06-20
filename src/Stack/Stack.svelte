@@ -1,18 +1,24 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
-  import { stacks } from './stack-store.js';
-  import { display } from '../helpers/display-store.js';
   import Card from '../Card/Card.svelte';
   import CardDropZone from '../Card/CardDropZone.svelte';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
+  import { display } from '../helpers/display-store.js';
+  import { getCardOffset, getHeight, getWidth  } from '../helpers/display-helpers.js';
+  import { stacks } from './stack-store.js';
 
   export let id;
+  export let top;
+  export let left;
 
   let cards;
 
-  const stack_offset_factor = 5;
-  const dispatch = createEventDispatcher();
+  $: width = getWidth(cards);
+  $: height = getHeight(cards);
 
   console.assert(id, 'stack has no valid ID');
+
+  const dispatch = createEventDispatcher();
 
   const unsubscribeStacks = stacks.subscribe(items => {
     const stack = items.find(i => i.id === id);
@@ -42,12 +48,15 @@
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
     top: var(--top);
     left: var(--left);
+    height: var(--height);
+    width: var(--width);
   }
 </style>
 
-<div class="stack">
+<div class="stack" use:cssVariables={{top, left, width, height}}>
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
+    <!-- TODO(KNR): I expect we have to add top to the card offset, but that's apparently wrong. Why?! -->
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} top="{getCardOffset(i)}" left="{getCardOffset(i)}" />
   {/each}
-  <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" on:drop="{onDrop}" />
+  <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{getCardOffset(cards.length)}px" --left="{getCardOffset(cards.length)}px" on:drop="{onDrop}" />
 </div>
