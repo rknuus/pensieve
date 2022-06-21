@@ -1,21 +1,24 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
-  import { stacks } from './stack-store.js';
-  import { display } from '../helpers/display-store.js';
   import Card from '../Card/Card.svelte';
   import CardDropZone from '../Card/CardDropZone.svelte';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
+  import { display } from '../helpers/display-store.js';
+  import { getCardOffset, getHeight, getWidth  } from '../helpers/display-helpers.js';
+  import { stacks } from './stack-store.js';
 
   export let id;
+  export let top;
+  export let left;
 
   let cards;
 
   $: width = getWidth(cards);
   $: height = getHeight(cards);
 
-  const stack_offset_factor = 5;
-  const dispatch = createEventDispatcher();
-
   console.assert(id, 'stack has no valid ID');
+
+  const dispatch = createEventDispatcher();
 
   const unsubscribeStacks = stacks.subscribe(items => {
     const stack = items.find(i => i.id === id);
@@ -37,37 +40,6 @@
     display.stopDragging();
     console.debug('dropped item ' + eventData.cardId + ' onto target stack ' + id);
   }
-
-  function getCardOffset(stackLevel) {
-    return stackLevel * stack_offset_factor;
-  }
-
-  function getHeight(cards) {
-    if (cards.length === 0) {
-      return 0;
-    }
-    // TODO(KNR): should we move card size to the display-store?!
-    const cardHeight = 112;
-    return cardHeight + getCardOffset(cards.length);
-  }
-
-  function getWidth(cards) {
-    if (cards.length === 0) {
-      return 0;
-    }
-    // TODO(KNR): should we move card size to the display-store?!
-    const cardHeight = 200;
-    return cardHeight + getCardOffset(cards.length);
-  }
-
-  // exposing height as CSS variable is borrowed from https://svelte.dev/repl/14a1b548093642a9a2dfb3e615382732?version=3.48.0
-  function setCssHeight(node) {
-    node.style.setProperty(`--height`, height);
-  }
-
-  function setCssWidth(node) {
-    node.style.setProperty(`--width`, width);
-  }
 </script>
 
 <style>
@@ -76,14 +48,15 @@
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
     top: var(--top);
     left: var(--left);
-    width: calc(var(--width) * 1px);
-    height:  calc(var(--height) * 1px);
+    height: var(--height);
+    width: var(--width);
   }
 </style>
 
-<div class="stack" use:setCssHeight use:setCssWidth>
+<div class="stack" use:cssVariables={{top, left, width, height}}>
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} --top="{getCardOffset(i)}px" --left="{getCardOffset(i)}px" />
+    <!-- TODO(KNR): I expect we have to add top to the card offset, but that's apparently wrong. Why?! -->
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} top="{getCardOffset(i)}" left="{getCardOffset(i)}" />
   {/each}
   <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{getCardOffset(cards.length)}px" --left="{getCardOffset(cards.length)}px" on:drop="{onDrop}" />
 </div>

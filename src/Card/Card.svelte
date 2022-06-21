@@ -1,10 +1,13 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
   import { cards } from './card-store.js';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
 
   export let id;
   export let parentId;
+  export let top;
+  export let left;
   export let topCard;
   export let draggable;
   export let flipped = false;
@@ -90,7 +93,7 @@
 }
 </style>
 
-<div class="card" class:flipped="{flipped}" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}">
+<div class="card" class:flipped="{flipped}" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}" use:cssVariables={{top, left}}>
   {#if !flipped}
     {@html renderedContent}
   {/if}
