@@ -5,12 +5,12 @@
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
   import { getCardOffset, getHeight, getWidth  } from '../helpers/display-helpers.js';
-  import { onDestroy } from 'svelte';
+  import { createEventDispatcher, onDestroy } from 'svelte';
 
   export let id;
   export let top;
   export let left;
-  export let selected = false;
+  export let selected;
 
   let openCards;
   let flippedCards;
@@ -20,6 +20,8 @@
   $: lowerTop = parseInt(top) + getCardOffset();
 
   console.assert(id, 'box has no valid ID');
+
+  const dispatch = createEventDispatcher();
 
   const unsubscribeBoxes = boxes.subscribe(items => {
     const box = items.find(i => i.id === id);
@@ -33,6 +35,10 @@
       unsubscribeBoxes();
     }
   });
+
+  function onDoubleclick(event) {
+    dispatch('selected', id);
+  }
 </script>
 
 <style>
@@ -44,9 +50,14 @@
     height: var(--height);
     width: var(--width);
   }
+
+  .selected {
+    /* borrowed from https://stackoverflow.com/questions/4561097/css-box-shadow-bottom-only */
+    box-shadow: 0 4px 2px -2px gray;
+  }
 </style>
 
-<div class="box" use:cssVariables={{top, left, height, width}}>
+<div class="box" class:selected use:cssVariables={{top, left, height, width}} on:dblclick="{onDoubleclick}">
   <OpenCards id="{id}" top="{top}" left="{left}" />
   <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
 </div>
