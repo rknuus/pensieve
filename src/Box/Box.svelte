@@ -15,9 +15,14 @@
   let openCards;
   let flippedCards;
 
-  $: width = getWidth(openCards.concat(flippedCards));
-  $: height = 2 * getHeight(openCards.concat(flippedCards));
-  $: lowerTop = parseInt(top) + getCardOffset();
+  $: allCards = openCards.concat(flippedCards);
+  $: width = getWidth(allCards);
+  $: height = 2 * getHeight(allCards);
+  $: lowerTop = parseInt(top) + getHeight(allCards) + getCardOffset(allCards.length);
+
+  // TEMPORARILY(KNR)
+  $: console.log('lowerTop of ' + id + ': ' + lowerTop);
+  // END TEMPORARILY(KNR)
 
   console.assert(id, 'box has no valid ID');
 
