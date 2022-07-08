@@ -29,15 +29,15 @@
 </script>
 
 <style>
-  .box {
+  .opencards {
     position: absolute;
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-    top: var(--top);
-    left: var(--left);
+/*    top: var(--top);
+    left: var(--left);*/
   }
 </style>
 
-<div use:cssVariables={{top, left}}>
+<div class="opencards" use:cssVariables={{top, left}}>
   {#each cards as cardId, i}
     <Card id={cardId} parentId={id} topCard={i === cards.length - 1} top="{getCardOffset(i)}" left="{getCardOffset(i)}" />
   {/each}
