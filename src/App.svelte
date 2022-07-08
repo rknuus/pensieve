@@ -6,6 +6,7 @@
 
   let selectedBox = null;
 
+  // borrowed from https://www.webtips.dev/webtips/svelte/how-to-read-values-of-a-store-in-svelte
   const boxIds= get(boxes).map(e => e.id);
 
   function onBoxSelected(event) {
