@@ -4,7 +4,7 @@
   import { createEventDispatcher, onDestroy } from 'svelte';
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
-  import { getCardOffset, getHeight, getWidth  } from '../helpers/display-helpers.js';
+  import { getHeight, getWidth  } from '../helpers/display-helpers.js';
   import { stacks } from './stack-store.js';
 
   export let id;
@@ -50,13 +50,17 @@
     left: var(--left);
     height: var(--height);
     width: var(--width);
+
+    transform-style: preserve-3d;
+    /* TODO(KNR): centralize perspective and origin in store */
+    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
+    transform-origin: top center;
   }
 </style>
 
 <div class="stack" use:cssVariables={{top, left, width, height}}>
   {#each cards as cardId, i}
-    <!-- TODO(KNR): I expect we have to add top to the card offset, but that's apparently wrong. Why?! -->
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} top="{getCardOffset(i)}" left="{getCardOffset(i)}" />
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
-  <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{getCardOffset(cards.length)}px" --left="{getCardOffset(cards.length)}px" on:drop="{onDrop}" />
+  <CardDropZone parentId={id} showAlways="{cards.length === 0}" level={cards.length} on:drop="{onDrop}" />
 </div>

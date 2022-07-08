@@ -2,12 +2,8 @@
   import Card from '../Card/Card.svelte';
   import { boxes } from './box-store.js';
   import { createEventDispatcher, onDestroy } from 'svelte';
-  import { cssVariables } from '../helpers/css-helpers.js';
-  import { getCardOffset } from '../helpers/display-helpers.js';
 
   export let id;
-  export let top;
-  export let left;
 
   let cards;
 
@@ -29,16 +25,10 @@
 </script>
 
 <style>
-  .opencards {
-    position: absolute;
-    /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-/*    top: var(--top);
-    left: var(--left);*/
-  }
 </style>
 
-<div class="opencards" use:cssVariables={{top, left}}>
+<div class="opencards">
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} top="{getCardOffset(i)}" left="{getCardOffset(i)}" />
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} level={cards.length - i} />
   {/each}
 </div>

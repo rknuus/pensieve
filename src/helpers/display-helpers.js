@@ -6,11 +6,12 @@ export function getCardOffset(stackLevel) {
   return stackLevel * stack_offset_factor;
 }
 
-export function getCardHeight() {
+// TODO(KNR): move size into a store
+function getCardHeight() {
   return 112;
 }
 
-export function getCardWidth() {
+function getCardWidth() {
   return 200;
 }
 

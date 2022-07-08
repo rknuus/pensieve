@@ -3,13 +3,15 @@
   import { boxes } from './box-store.js';
   import { createEventDispatcher, onDestroy } from 'svelte';
   import { cssVariables } from '../helpers/css-helpers.js';
-  import { getCardHeight, getCardOffset } from '../helpers/display-helpers.js';
+  import { positioning } from '../helpers/positioning-store.js';
 
   export let id;
   export let top;
   export let left;
 
   let cards;
+
+  $: cardHeight = $positioning.card.height + 'px';
 
   const dispatch = createEventDispatcher();
 
@@ -31,14 +33,11 @@
 <style>
   .flippedcards {
     position: absolute;
-    /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-/*    top: var(--top);
-    left: var(--left);
-*/  }
+  }
 </style>
 
 <div class="flippedcards" use:cssVariables={{top, left}}>
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} flipped={true} top="{getCardHeight() + getCardOffset(-i)}" left="{getCardOffset(-i)}" --zIndex="{-i}" />
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} flipped={true} level={i} />
   {/each}
 </div>
