@@ -1,6 +1,7 @@
 <script>
   import FlippedCards from './FlippedCards.svelte';
   import OpenCards from './OpenCards.svelte';
+  import OpenedBoxWalls from './OpenedBoxWalls.svelte';
   import { boxes } from './box-store.js';
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
@@ -17,8 +18,9 @@
 
   $: allCards = openCards.concat(flippedCards);
   $: width = getWidth(allCards);
-  $: height = 2 * getHeight(allCards);
+  $: height = getHeight(allCards) + getHeight(1);
   $: lowerTop = parseInt(top) + getHeight(allCards) + getCardOffset(allCards.length);
+  $: totalOffset = getCardOffset(allCards.length) + getCardOffset(1);  // add one card for the single-card case
 
   // TEMPORARILY(KNR)
   $: console.log('lowerTop of ' + id + ': ' + lowerTop);
@@ -65,4 +67,5 @@
 <div class="box" class:selected use:cssVariables={{top, left, height, width}} on:dblclick="{onDoubleclick}">
   <OpenCards id="{id}" top="{top}" left="{left}" />
   <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
+  <OpenedBoxWalls top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
 </div>
