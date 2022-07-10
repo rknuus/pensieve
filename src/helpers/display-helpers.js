@@ -20,7 +20,8 @@ export function getHeight(cards) {
   }
   // TODO(KNR): should we move card size to the display-store?!
   const cardHeight = getCardHeight();
-  return cardHeight + getCardOffset(cards.length);
+  const stackSize = getStackSize(cards);
+  return cardHeight + getCardOffset(stackSize);
 }
 
 export function getWidth(cards) {
@@ -28,8 +29,9 @@ export function getWidth(cards) {
     return 0;
   }
   // TODO(KNR): should we move card size to the display-store?!
-  const cardHeight = getCardWidth();
-  return cardHeight + getCardOffset(cards.length);
+  const cardWidth = getCardWidth();
+  const stackSize = getStackSize(cards);
+  return cardWidth + getCardOffset(stackSize);
 }
 
 export function getUnit(variable) {
@@ -37,4 +39,12 @@ export function getUnit(variable) {
     return 'px';
   }
   return '';
+}
+
+function getStackSize(cards) {
+  if (Number.isInteger(cards)) {
+    return cards;
+  }
+  // TODO(KNR): assert cards is an array of integers
+  return cards.length;
 }
