@@ -1,4 +1,3 @@
-// import { tick } from 'svelte';
 import { writable } from 'svelte/store';
 
 const displayStore = writable({
