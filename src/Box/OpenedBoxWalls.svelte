@@ -1,6 +1,5 @@
 <script>
   import { cssVariables } from '../helpers/css-helpers.js';
-  import { getCardOffset, getCardWidth, getCardHeight, getHeight  } from '../helpers/display-helpers.js';
   import { positioning } from '../helpers/positioning-store.js';
 
   export let top;
