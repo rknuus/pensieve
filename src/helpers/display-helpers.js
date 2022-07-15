@@ -16,7 +16,7 @@ function getCardWidth() {
 }
 
 export function getHeight(cards) {
-  if (cards.length === 0) {
+  if (cards === 0 || cards.length === 0) {
     return 0;
   }
   // TODO(KNR): should we move card size to the display-store?!
@@ -26,7 +26,7 @@ export function getHeight(cards) {
 }
 
 export function getWidth(cards) {
-  if (cards.length === 0) {
+  if (cards === 0 || cards.length === 0) {
     return 0;
   }
   // TODO(KNR): should we move card size to the display-store?!
