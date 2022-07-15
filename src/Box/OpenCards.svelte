@@ -32,6 +32,6 @@
 
 <div class="opencards">
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} level={i} />
+    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} level={cards.length - i} />
   {/each}
 </div>
