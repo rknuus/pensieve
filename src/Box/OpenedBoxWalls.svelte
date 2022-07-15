@@ -2,13 +2,11 @@
   import { cssVariables } from '../helpers/css-helpers.js';
   import { positioning } from '../helpers/positioning-store.js';
 
-  export let top;
-  export let left;
   export let cardCount;
 
   // For boxes with a small number of cards the box shape would look weird if the shape is directly
   // proportional to the number of cards. So always use a multiple of 64.
-  $: capacity = 64 + Math.floor(cardCount / 64) * 64;
+  $: capacity = 200 + Math.floor(cardCount / 100) * 100;
 
   $: cardWidth = $positioning.card.width + 'px';
   $: cardHeight = $positioning.card.height + 'px';
@@ -19,28 +17,18 @@
 
 <style>
   /* borrowed from https://davidwalsh.name/css-cube */
-  /* scene wrapper */
-  .wrapper {
-    position: relative;
-    z-index: -1;
-  }
-
   .cube {
     position: absolute;
     top: var(--cubeTop);
     width: var(--cardWidth);
-    /* TODO(KNR): figure out how to avoid redundancy with Box
-       also, the 3D view of the cards don't fit to the box walls
-     */
+    z-index: -1;
     transform-style: preserve-3d;
-    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
-    transform-origin: top center;
   }
 
   .wall {
     position: absolute;
     background: rgba(255,255,255,0.1);
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.2);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
     color: rgba(0,0,0,0.5);
   }
 
@@ -67,16 +55,14 @@
     height: var(--boxDepth);
     transform: rotateX(90deg);
     transform-origin: top center;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.7);
   }
 </style>
 
 {#if cardCount > 0}
-  <div class="wrapper" use:cssVariables={{cubeTop}}>
-    <div class="origin" />
-    <div class="cube" use:cssVariables={{cardWidth, cardHeight}}>
-      <div class="back wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
-      <div class="bottom wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
-      <div class="right wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
-    </div>
+  <div class="cube" use:cssVariables={{cubeTop, cardWidth, cardHeight}}>
+    <div class="back wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="bottom wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="right wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
   </div>
 {/if}
