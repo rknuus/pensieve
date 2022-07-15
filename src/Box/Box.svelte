@@ -4,8 +4,7 @@
   import OpenedBoxWalls from './OpenedBoxWalls.svelte';
   import { boxes } from './box-store.js';
   import { cssVariables } from '../helpers/css-helpers.js';
-  import { display } from '../helpers/display-store.js';
-  import { getCardOffset, getHeight, getWidth  } from '../helpers/display-helpers.js';
+  import { getCardOffset, getHeight  } from '../helpers/display-helpers.js';
   import { createEventDispatcher, onDestroy } from 'svelte';
 
   export let id;
@@ -17,14 +16,7 @@
   let flippedCards;
 
   $: allCards = openCards.concat(flippedCards);
-  $: width = getWidth(allCards);
-  $: height = getHeight(allCards) + getHeight(1);
   $: lowerTop = parseInt(top) + getHeight(allCards) + getCardOffset(allCards.length);
-  $: totalOffset = getCardOffset(allCards.length) + getCardOffset(1);  // add one card for the single-card case
-
-  // TEMPORARILY(KNR)
-  $: console.log('lowerTop of ' + id + ': ' + lowerTop);
-  // END TEMPORARILY(KNR)
 
   console.assert(id, 'box has no valid ID');
 
@@ -54,8 +46,10 @@
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
     top: var(--top);
     left: var(--left);
-    height: var(--height);
-    width: var(--width);
+
+    transform-style: preserve-3d;
+    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
+    transform-origin: top center;
   }
 
   .selected {
@@ -64,9 +58,8 @@
   }
 </style>
 
-<div class="box" class:selected use:cssVariables={{top, left, height, width}} on:dblclick="{onDoubleclick}">
+<div class="box" class:selected use:cssVariables={{top, left}} on:dblclick="{onDoubleclick}">
   <OpenCards id="{id}" top="{top}" left="{left}" />
-  <!-- TODO(KNR): the flipped cards are not shown -->
   <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
   <OpenedBoxWalls top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
 </div>

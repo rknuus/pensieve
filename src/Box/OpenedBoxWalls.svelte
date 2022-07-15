@@ -5,8 +5,6 @@
   export let top;
   export let left;
   export let cardCount;
-  let width;
-  let height;
 
   // For boxes with a small number of cards the box shape would look weird if the shape is directly
   // proportional to the number of cards. So always use a multiple of 64.
@@ -30,12 +28,13 @@
   .cube {
     position: absolute;
     top: var(--cubeTop);
-    left: 0px;
-    margin: 0 auto;
     width: var(--cardWidth);
+    /* TODO(KNR): figure out how to avoid redundancy with Box
+       also, the 3D view of the cards don't fit to the box walls
+     */
     transform-style: preserve-3d;
-    transform: perspective(50cm) rotateX(-1deg) rotateY(20deg);
-    transition: all 1s linear;
+    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
+    transform-origin: top center;
   }
 
   .wall {
@@ -43,7 +42,6 @@
     background: rgba(255,255,255,0.1);
     box-shadow: inset 0 0 30px rgba(0,0,0,0.2);
     color: rgba(0,0,0,0.5);
-    transition: all 1s linear;
   }
 
   .back {
