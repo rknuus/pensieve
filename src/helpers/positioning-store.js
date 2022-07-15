@@ -5,7 +5,7 @@ const store = writable({
     height: 112,
     width: 200,
   },
-  zShiftFactor: 25,
+  zShiftFactor: 15,
 });
 
 export const positioning = {
