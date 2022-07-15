@@ -32,6 +32,8 @@
     }
   });
 
+  // TODO(KNR): drag&drop is broken: while dragging the drop zones are not properly displayed and dropping
+  // onto a non-empty stack fails
   function onDrop(event) {
     // getting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
     const json = event.dataTransfer.getData("text/plain");

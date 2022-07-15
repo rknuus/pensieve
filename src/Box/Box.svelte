@@ -66,6 +66,7 @@
 
 <div class="box" class:selected use:cssVariables={{top, left, height, width}} on:dblclick="{onDoubleclick}">
   <OpenCards id="{id}" top="{top}" left="{left}" />
+  <!-- TODO(KNR): the flipped cards are not shown -->
   <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
   <OpenedBoxWalls top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
 </div>
