@@ -3,6 +3,7 @@
   import { createEventDispatcher, onDestroy } from 'svelte';
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
+  import { positioning } from '../helpers/positioning-store.js';
 
   export let id;
   export let parentId;
@@ -25,6 +26,8 @@
     renderedContent = card.renderedContent;
   });
 
+  $: cardWidth = $positioning.card.width + 'px';
+  $: cardHeight = $positioning.card.height + 'px';
   $: dragEnabled = draggable && topCard;
 
   onDestroy(() => {
@@ -57,8 +60,8 @@
 }
 
 .card {
-  height: 112px;
-  aspect-ratio: 1.7857;
+  width: var(--cardWidth);
+  height: var(--cardHeight);
 
   position: absolute;
   /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
@@ -93,7 +96,7 @@
 }
 </style>
 
-<div class="card" class:flipped="{flipped}" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}" use:cssVariables={{top, left}}>
+<div class="card" class:flipped="{flipped}" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}" use:cssVariables={{top, left, cardWidth, cardHeight}}>
   {#if !flipped}
     {@html renderedContent}
   {/if}
