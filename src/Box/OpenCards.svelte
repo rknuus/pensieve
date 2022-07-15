@@ -25,6 +25,9 @@
 </script>
 
 <style>
+  .opencards {
+    transform-style: preserve-3d;
+  }
 </style>
 
 <div class="opencards">

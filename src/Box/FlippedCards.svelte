@@ -32,7 +32,7 @@
 
 <style>
   .flippedcards {
-    position: absolute;
+    transform-style: preserve-3d;
   }
 </style>
 
