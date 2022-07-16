@@ -49,6 +49,23 @@
     transform-origin: center left;
   }
 
+  .front {
+    top: var(--cardHeight);
+    left: 0px;
+    width: var(--cardWidth);
+    height: calc(var(--cardHeight) / 20);
+    transform: translateZ(var(--boxDepth)) translateY(calc(-1 * var(--cardHeight) / 20));
+  }
+
+  .left {
+    top: calc(var(--cardHeight) - var(--cardHeight) / 20);
+    left: 0px;
+    width: var(--cardWidth);
+    height: calc(var(--cardHeight) / 20);
+    transform: rotateY(-90deg);
+    transform-origin: center left;
+  }
+
   .bottom {
     top: var(--cardHeight);
     left: 0px;
@@ -67,7 +84,9 @@
 {#if cardCount > 0}
   <div class="cube" use:cssVariables={{cubeTop, cardWidth, cardHeight}}>
     <div class="back wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
-    <div class="bottom wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
     <div class="right wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="front wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="left wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="bottom wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
   </div>
 {/if}
