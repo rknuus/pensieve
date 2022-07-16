@@ -3,6 +3,7 @@
   import { positioning } from '../helpers/positioning-store.js';
 
   export let cardCount;
+  export let selected;
 
   // For boxes with a small number of cards the box shape would look weird if the shape is directly
   // proportional to the number of cards. So always use a multiple of 64.
@@ -57,12 +58,16 @@
     transform-origin: top center;
     box-shadow: inset 0 0 30px rgba(0,0,0,0.7);
   }
+
+  .selected {
+    background: rgba(100,255,255,0.5);
+  }
 </style>
 
 {#if cardCount > 0}
   <div class="cube" use:cssVariables={{cubeTop, cardWidth, cardHeight}}>
-    <div class="back wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
-    <div class="bottom wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
-    <div class="right wall" use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="back wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="bottom wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
+    <div class="right wall" class:selected use:cssVariables={{cardWidth, cardHeight, boxDepth}} />
   </div>
 {/if}

@@ -51,15 +51,10 @@
     transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
     transform-origin: top center;
   }
-
-  .selected {
-    /* borrowed from https://stackoverflow.com/questions/4561097/css-box-shadow-bottom-only */
-    box-shadow: 0 4px 2px -2px gray;
-  }
 </style>
 
-<div class="box" class:selected use:cssVariables={{top, left}} on:dblclick="{onDoubleclick}">
+<div class="box" use:cssVariables={{top, left}} on:dblclick="{onDoubleclick}">
   <OpenCards id="{id}" top="{top}" left="{left}" />
   <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
-  <OpenedBoxWalls top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
+  <OpenedBoxWalls selected={selected} top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
 </div>
