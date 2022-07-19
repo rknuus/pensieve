@@ -22,6 +22,10 @@ To achieve stacking effects we use 3D CSS transformations. By translating elemen
 
 When combined with perspective settings from a slight top-left angle on the parent containers, the visualization looks quite realistic.
 
+## Interacting
+### Mouse vs. keyboard
+Using the mouse for drag and drop operations (e.g. of cards) is an obvious choice. The question is whether all other interactions should also be controlled by the mouse or by the keyboard. The reason why I opted for the keyboard is simplicity. Because it allowed me to focus on implementing basic functionality and not having to worry about the complexity of distinguishing similar but different interactions, e.g. whether a card in a box should be flipped or dragged.
+
 ## Troubleshooting
 * When a boolean parameter passed to a Svelte component does not have the expected effect (e.g. `alwaysShow="false"`) check if the value is braced correctly: `alwaysShow="{false}"`. That's a tricky one, because a string might evaluate to a wrong value, while it prints the expected value in `$: console.log(alwaysShow)` expressions.
 

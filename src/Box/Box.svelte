@@ -38,6 +38,38 @@
   function onDoubleclick(event) {
     dispatch('selected', id);
   }
+
+  function onKeyDown(e) {
+    if (selected) {
+      console.log('box ' + id + ' got key ' + e.keyCode);
+      switch (e.keyCode) {
+        case 37:  // left
+          flipCardUp();
+          break;
+        case 39:  // right
+          flipCardDown();
+          break;
+        case 38:  // up
+          flipCardUp();
+          break;
+        case 40:  // down
+          flipCardDown();
+          break;
+      }
+    }
+  }
+
+  function flipCardUp() {
+    if (flippedCards.length > 0) {
+      boxes.flipCardUp(id);
+    }
+  }
+
+  function flipCardDown() {
+    if (openCards.length > 0) {
+      boxes.flipCardDown(id);
+    }
+  }
 </script>
 
 <style>
@@ -58,3 +90,5 @@
   <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
   <OpenedBoxWalls selected={selected} top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
 </div>
+
+<svelte:window on:keydown|preventDefault={onKeyDown} />
