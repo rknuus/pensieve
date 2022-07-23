@@ -19,20 +19,6 @@ const store = writable([
     },
   ]);
 
-function removeCard(cardId, sourceId) {
-  // by convention we only remove cards from the open stack
-  store.update(items => {
-    const sourceIndex = items.findIndex(s => s.id === sourceId);
-    console.assert(sourceIndex !== -1);
-
-    const updatedItems = [...items];
-    console.assert(updatedItems[sourceIndex].cards.includes(cardId));
-    updatedItems[sourceIndex].cards = updatedItems[sourceIndex].cards.filter(c => c !== cardId);
-
-    return updatedItems;
-  });
-}
-
 function addCard(cardId, targetId) {
   // by convention we only add cards to the open stack
   store.update(items => {
@@ -42,6 +28,20 @@ function addCard(cardId, targetId) {
     const updatedItems = [...items];
     console.assert(!updatedItems[targetIndex].cards.includes(cardId));
     updatedItems[targetIndex].cards.push(cardId);
+
+    return updatedItems;
+  });
+}
+
+function removeCard(cardId, sourceId) {
+  // by convention we only remove cards from the open stack
+  store.update(items => {
+    const sourceIndex = items.findIndex(s => s.id === sourceId);
+    console.assert(sourceIndex !== -1);
+
+    const updatedItems = [...items];
+    console.assert(updatedItems[sourceIndex].cards.includes(cardId));
+    updatedItems[sourceIndex].cards = updatedItems[sourceIndex].cards.filter(c => c !== cardId);
 
     return updatedItems;
   });
@@ -77,5 +77,6 @@ export const boxes = {
   remove: (id) => { removeItemFromStore(id, store); },
   flipCardUp: (id) => { flipCardUp(id); },
   flipCardDown: (id) => { flipCardDown(id); },
-  addCardToBox: (cardId, targetId) => { addCard(cardId, targetId); },
+  addCard: (cardId, targetId) => { addCard(cardId, targetId); },
+  removeCard: (cardId, sourceId) => { removeCard(cardId, sourceId); },
 };

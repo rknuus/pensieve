@@ -33,7 +33,7 @@
 
 <div class="opencards">
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} level={cards.length - i} />
+    <Card id={cardId} parentId={id} parentStoreType='box' topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
-  <CardDropZone parentId={id} showAlways="{false}" level={cards.length + 1} on:drop />
+  <CardDropZone parentId={id} showAlways="{false}" level={cards.length} on:drop />
 </div>

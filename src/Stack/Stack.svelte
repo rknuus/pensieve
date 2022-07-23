@@ -5,6 +5,7 @@
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
   import { getHeight, getWidth  } from '../helpers/display-helpers.js';
+  import { getStore } from '../helpers/stores.js';
   import { stacks } from './stack-store.js';
 
   export let id;
@@ -36,9 +37,12 @@
     // getting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
     const json = event.dataTransfer.getData("text/plain");
     const eventData = JSON.parse(json);
-    stacks.moveCard(eventData.cardId, eventData.sourceId, id);
+    const cardId = eventData.cardId;
+    const sourceStore = getStore(eventData.sourceStore);
+    sourceStore.removeCard(cardId, eventData.sourceId);
+    stacks.addCard(cardId, id);
     display.stopDragging();
-    console.debug('dropped item ' + eventData.cardId + ' onto target stack ' + id);
+    console.debug('dropped item ' + cardId + ' onto target stack ' + id);
   }
 </script>
 
@@ -60,7 +64,7 @@
 
 <div class="stack" use:cssVariables={{top, left, width, height}}>
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} draggable={true} level={i} />
+    <Card id={cardId} parentId={id} parentStoreType='stack' topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
   <CardDropZone parentId={id} showAlways="{cards.length === 0}" level={cards.length} on:drop="{onDrop}" />
 </div>

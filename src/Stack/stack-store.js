@@ -16,10 +16,17 @@ const store = writable([
     },
   ]);
 
-function moveCard(cardId, sourceId, targetId) {
-  // TODO(KNR): not sure it's an issue if the move is not atomic
-  removeCard(cardId, sourceId);
-  addCard(cardId, targetId);
+function addCard(cardId, targetId) {
+  store.update(items => {
+    const targetIndex = items.findIndex(s => s.id === targetId);
+    console.assert(targetIndex !== -1);
+
+    const updatedItems = [...items];
+    console.assert(!updatedItems[targetIndex].cards.includes(cardId));
+    updatedItems[targetIndex].cards.push(cardId);
+
+    return updatedItems;
+  });
 }
 
 function removeCard(cardId, sourceId) {
@@ -35,25 +42,12 @@ function removeCard(cardId, sourceId) {
   });
 }
 
-function addCard(cardId, targetId) {
-  store.update(items => {
-    const targetIndex = items.findIndex(s => s.id === targetId);
-    console.assert(targetIndex !== -1);
-
-    const updatedItems = [...items];
-    console.assert(!updatedItems[targetIndex].cards.includes(cardId));
-    updatedItems[targetIndex].cards.push(cardId);
-
-    return updatedItems;
-  });
-}
-
 export const stacks = {
   subscribe: store.subscribe,
   unsubscribe: store.unsubscribe,
   add: (item) => { addToStore(item, store); },
   update: (id, data) => { updateItemInStore(id, data, store); },
   remove: (id) => { removeItemFromStore(id, store); },
-  moveCard: (cardId, sourceId, targetId) => { moveCard(cardId, sourceId, targetId); },
-  removeCardFromStack: (cardId, sourceId) => { removeCard(cardId, sourceId); },
+  addCard: (cardId, targetId) => { addCard(cardId, targetId); },
+  removeCard: (cardId, sourceId) => { removeCard(cardId, sourceId); },
 };

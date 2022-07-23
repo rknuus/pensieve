@@ -7,6 +7,7 @@
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
   import { getCardOffset, getHeight  } from '../helpers/display-helpers.js';
+  import { getStore } from '../helpers/stores.js';
   import { stacks } from '../Stack/stack-store.js';  // TODO(KNR): in OO this dependency would be a no-no
 
   export let id;
@@ -74,14 +75,16 @@
   }
 
   function onDrop(e) {
+    // TODO(KNR): apart from the target store this function is identical to onDrop of Stack
     // getting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
     const json = event.dataTransfer.getData("text/plain");
     const eventData = JSON.parse(json);
     const cardId = eventData.cardId;
-    stacks.removeCardFromStack(cardId, eventData.sourceId);
-    boxes.addCardToBox(cardId, id);
+    const sourceStore = getStore(eventData.sourceStore);
+    sourceStore.removeCard(cardId, eventData.sourceId);
+    boxes.addCard(cardId, id);
     display.stopDragging();
-    console.debug('dropped item ' + eventData.cardId + ' onto box ' + id);
+    console.debug('dropped item ' + cardId + ' onto target box ' + id);
   }
 </script>
 
