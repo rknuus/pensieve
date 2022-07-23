@@ -3,9 +3,12 @@
   import OpenCards from './OpenCards.svelte';
   import OpenedBoxWalls from './OpenedBoxWalls.svelte';
   import { boxes } from './box-store.js';
-  import { cssVariables } from '../helpers/css-helpers.js';
-  import { getCardOffset, getHeight  } from '../helpers/display-helpers.js';
   import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
+  import { display } from '../helpers/display-store.js';
+  import { getCardOffset, getHeight  } from '../helpers/display-helpers.js';
+  import { getStore } from '../helpers/stores.js';
+  import { stacks } from '../Stack/stack-store.js';  // TODO(KNR): in OO this dependency would be a no-no
 
   export let id;
   export let top;
@@ -70,6 +73,19 @@
       boxes.flipCardDown(id);
     }
   }
+
+  function onDrop(e) {
+    // TODO(KNR): apart from the target store this function is identical to onDrop of Stack
+    // getting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
+    const json = event.dataTransfer.getData("text/plain");
+    const eventData = JSON.parse(json);
+    const cardId = eventData.cardId;
+    const sourceStore = getStore(eventData.sourceStore);
+    sourceStore.removeCard(cardId, eventData.sourceId);
+    boxes.addCard(cardId, id);
+    display.stopDragging();
+    console.debug('dropped item ' + cardId + ' onto target box ' + id);
+  }
 </script>
 
 <style>
@@ -86,7 +102,7 @@
 </style>
 
 <div class="box" use:cssVariables={{top, left}} on:dblclick="{onDoubleclick}">
-  <OpenCards id="{id}" top="{top}" left="{left}" />
+  <OpenCards id="{id}" top="{top}" left="{left}" on:drop="{onDrop}" />
   <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
   <OpenedBoxWalls selected={selected} top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
 </div>

@@ -7,6 +7,7 @@
 
   export let id;
   export let parentId;
+  export let parentStoreType;
   export let topCard;
   export let draggable;
   export let level;
@@ -38,7 +39,9 @@
 
   function onDragStart(event) {
     // setting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
-    const data = {cardId: id, sourceId: parentId};
+    // TODO(KNR): do we sill need parentId?
+    // TODO(KNR): does it work to pass a store object?
+    const data = {cardId: id, sourceId: parentId, sourceStore: parentStoreType};
     event.dataTransfer.setData('text/plain', JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
     console.debug('starting to drag item ' + id + ' from source stack ' + parentId);

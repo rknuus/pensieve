@@ -16,18 +16,27 @@ const store = writable([
     },
   ]);
 
-function moveCard(cardId, sourceId, targetId) {
+function addCard(cardId, targetId) {
   store.update(items => {
-    const sourceIndex = items.findIndex(s => s.id === sourceId);
-    console.assert(sourceIndex !== -1);
     const targetIndex = items.findIndex(s => s.id === targetId);
     console.assert(targetIndex !== -1);
 
     const updatedItems = [...items];
-    console.assert(updatedItems[sourceIndex].cards.includes(cardId));
     console.assert(!updatedItems[targetIndex].cards.includes(cardId));
-    updatedItems[sourceIndex].cards = updatedItems[sourceIndex].cards.filter(c => c !== cardId);
     updatedItems[targetIndex].cards.push(cardId);
+
+    return updatedItems;
+  });
+}
+
+function removeCard(cardId, sourceId) {
+  store.update(items => {
+    const sourceIndex = items.findIndex(s => s.id === sourceId);
+    console.assert(sourceIndex !== -1);
+
+    const updatedItems = [...items];
+    console.assert(updatedItems[sourceIndex].cards.includes(cardId));
+    updatedItems[sourceIndex].cards = updatedItems[sourceIndex].cards.filter(c => c !== cardId);
 
     return updatedItems;
   });
@@ -39,5 +48,6 @@ export const stacks = {
   add: (item) => { addToStore(item, store); },
   update: (id, data) => { updateItemInStore(id, data, store); },
   remove: (id) => { removeItemFromStore(id, store); },
-  moveCard: (cardId, sourceId, targetId) => { moveCard(cardId, sourceId, targetId); },
+  addCard: (cardId, targetId) => { addCard(cardId, targetId); },
+  removeCard: (cardId, sourceId) => { removeCard(cardId, sourceId); },
 };

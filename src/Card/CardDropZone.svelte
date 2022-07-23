@@ -21,6 +21,8 @@
   width: var(--cardWidth);
   height: var(--cardHeight);
 
+  position: absolute;
+
   transform: translateZ(var(--zShift));
 
   border-style: dotted;

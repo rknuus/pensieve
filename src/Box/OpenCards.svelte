@@ -1,5 +1,6 @@
 <script>
   import Card from '../Card/Card.svelte';
+  import CardDropZone from '../Card/CardDropZone.svelte';
   import { boxes } from './box-store.js';
   import { createEventDispatcher, onDestroy } from 'svelte';
 
@@ -25,10 +26,14 @@
 </script>
 
 <style>
+  .opencards {
+    transform-style: preserve-3d;
+  }
 </style>
 
 <div class="opencards">
   {#each cards as cardId, i}
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} level={cards.length - i} />
+    <Card id={cardId} parentId={id} parentStoreType='box' topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
+  <CardDropZone parentId={id} showAlways="{false}" level={cards.length} on:drop />
 </div>
