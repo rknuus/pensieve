@@ -1,5 +1,6 @@
 <script>
   import Card from '../Card/Card.svelte';
+  import CardDropZone from '../Card/CardDropZone.svelte';
   import { boxes } from './box-store.js';
   import { createEventDispatcher, onDestroy } from 'svelte';
 
@@ -34,4 +35,5 @@
   {#each cards as cardId, i}
     <Card id={cardId} parentId={id} topCard={i === cards.length - 1} level={cards.length - i} />
   {/each}
+  <CardDropZone parentId={id} showAlways="{false}" level={cards.length + 1} on:drop />
 </div>
