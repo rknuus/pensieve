@@ -1,37 +1,29 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
+  import { positioning } from '../helpers/positioning-store.js';
 
   export let parentId;
+  export let level;
   export let showAlways = false;
-
-  let highlightDropZones = null;
-  let sourceId = null;
 
   console.assert(parentId, 'placeholder has no valid parent ID');
 
-  const unsubscribeDisplay = display.subscribe(data => {
-    highlightDropZones = data.highlightDropZones;
-    sourceId = data.sourceStackId;
-  });
-
-  onDestroy(() => {
-    if (unsubscribeDisplay) {
-      unsubscribeDisplay();
-    }
-  });
+  $: cardWidth = $positioning.card.width + 'px';
+  $: cardHeight = $positioning.card.height + 'px';
+  $: zShift = (level * $positioning.zShiftFactor) + 'px';
+  $: highlightDropZones = $display.highlightDropZones;
+  $: sourceId = $display.sourceStackId;
 </script>
 
 <style>
 .placeholdercard {
-  height: 112px;
-  aspect-ratio: 1.7857;
-  /*width: 200px;*/
+  width: var(--cardWidth);
+  height: var(--cardHeight);
 
   position: absolute;
-  /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-  top: var(--top);
-  left: var(--left);
+
+  transform: translateZ(var(--zShift));
 
   border-style: dotted;
   border-width: 1px;
@@ -39,6 +31,6 @@
 </style>
 
 {#if showAlways || (highlightDropZones && sourceId !== parentId)}
-  <div class="placeholdercard" on:dragover|preventDefault on:drop|preventDefault>
+  <div class="placeholdercard" on:dragover|preventDefault on:drop|preventDefault use:cssVariables={{zShift, cardWidth, cardHeight}}>
   </div>
 {/if}

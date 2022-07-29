@@ -1,25 +1,30 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
-  import { stacks } from './stack-store.js';
-  import { display } from '../helpers/display-store.js';
   import Card from '../Card/Card.svelte';
   import CardDropZone from '../Card/CardDropZone.svelte';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
+  import { display } from '../helpers/display-store.js';
+  import { getHeight, getWidth  } from '../helpers/display-helpers.js';
+  import { getStore } from '../helpers/stores.js';
+  import { stacks } from './stack-store.js';
 
   export let id;
+  export let top;
+  export let left;
 
   let cards;
-  let stackData;
 
-  const stack_offset_factor = 5;
-  const dispatch = createEventDispatcher();
+  $: width = getWidth(cards);
+  $: height = getHeight(cards);
 
   console.assert(id, 'stack has no valid ID');
+
+  const dispatch = createEventDispatcher();
 
   const unsubscribeStacks = stacks.subscribe(items => {
     const stack = items.find(i => i.id === id);
     console.assert(stack, 'stack with ID %s not found in stack store', id);
     cards = stack.cards;
-    stackData = items;
   });
 
   onDestroy(() => {
@@ -32,9 +37,12 @@
     // getting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
     const json = event.dataTransfer.getData("text/plain");
     const eventData = JSON.parse(json);
-    stacks.moveCard(eventData.cardId, eventData.sourceId, id);
+    const cardId = eventData.cardId;
+    const sourceStore = getStore(eventData.sourceStore);
+    sourceStore.removeCard(cardId, eventData.sourceId);
+    stacks.addCard(cardId, id);
     display.stopDragging();
-    console.debug('dropped item ' + eventData.cardId + ' onto target stack ' + id);
+    console.debug('dropped item ' + cardId + ' onto target stack ' + id);
   }
 </script>
 
@@ -44,13 +52,19 @@
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
     top: var(--top);
     left: var(--left);
+    height: var(--height);
+    width: var(--width);
+
+    transform-style: preserve-3d;
+    /* TODO(KNR): centralize perspective and origin in store */
+    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
+    transform-origin: top center;
   }
 </style>
 
-<div class="stack">
+<div class="stack" use:cssVariables={{top, left, width, height}}>
   {#each cards as cardId, i}
-    <!-- TODO(KNR): because the condition depends on the loop variable, I don't know how to factor it out into a function or a $: expression -->
-    <Card id={cardId} parentId={id} topCard={i === cards.length - 1} --top="{i * stack_offset_factor}px" --left="{i * stack_offset_factor}px" />
+    <Card id={cardId} parentId={id} parentStoreType='stack' topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
-  <CardDropZone parentId={id} showAlways="{cards.length === 0}" --top="{cards.length * stack_offset_factor}px" --left="{cards.length * stack_offset_factor}px" on:drop="{onDrop}" />
+  <CardDropZone parentId={id} showAlways="{cards.length === 0}" level={cards.length} on:drop="{onDrop}" />
 </div>

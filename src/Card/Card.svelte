@@ -1,11 +1,17 @@
 <script>
-  import { createEventDispatcher, onDestroy } from 'svelte';
   import { cards } from './card-store.js';
+  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
+  import { positioning } from '../helpers/positioning-store.js';
 
   export let id;
   export let parentId;
+  export let parentStoreType;
   export let topCard;
+  export let draggable;
+  export let level;
+  export let flipped = false;
 
   let renderedContent;
 
@@ -20,6 +26,11 @@
     renderedContent = card.renderedContent;
   });
 
+  $: cardWidth = $positioning.card.width + 'px';
+  $: cardHeight = $positioning.card.height + 'px';
+  $: zShift = (level * $positioning.zShiftFactor) + 'px';
+  $: dragEnabled = draggable && topCard;
+
   onDestroy(() => {
     if (unsubscribe) {
       unsubscribe();
@@ -28,11 +39,12 @@
 
   function onDragStart(event) {
     // setting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
-    const data = {cardId: id, sourceId: parentId};
+    // TODO(KNR): do we sill need parentId?
+    // TODO(KNR): does it work to pass a store object?
+    const data = {cardId: id, sourceId: parentId, sourceStore: parentStoreType};
     event.dataTransfer.setData('text/plain', JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
     console.debug('starting to drag item ' + id + ' from source stack ' + parentId);
-    // TODO(KNR): updating the store interrupts the drag operation
     display.startDragging(parentId);
   }
 
@@ -50,13 +62,11 @@
 }
 
 .card {
-  height: 112px;
-  aspect-ratio: 1.7857;
+  width: var(--cardWidth);
+  height: var(--cardHeight);
 
   position: absolute;
-  /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-  top: var(--top);
-  left: var(--left);
+  transform: translateZ(var(--zShift));
 
   box-shadow: 1px 1px 3px rgba(0,0,0,.25);
   background-color: white;  /* avoid cards being transparent */
@@ -79,8 +89,14 @@
 .draggable {
   cursor: move;
 }
+
+.flipped {
+  transform: rotateX(-180deg) translateY(calc(-1 * var(--cardHeight))) translateZ(calc(-1 * var(--zShift)));
+}
 </style>
 
-<div class="card" class:draggable="{topCard}" draggable={topCard} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}">
-  {@html renderedContent}
+<div class="card" class:flipped="{flipped}" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}" use:cssVariables={{zShift, cardWidth, cardHeight}}>
+  {#if !flipped}
+    {@html renderedContent}
+  {/if}
 </div>
