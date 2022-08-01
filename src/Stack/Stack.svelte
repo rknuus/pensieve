@@ -62,7 +62,7 @@
   }
 </style>
 
-<div class="stack" use:cssVariables={{top, left, width, height}}>
+<div id="{id}" class="stack" use:cssVariables={{top, left, width, height}}>
   {#each cards as cardId, i}
     <Card id={cardId} parentId={id} parentStoreType='stack' topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
