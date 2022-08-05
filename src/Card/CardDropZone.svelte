@@ -9,9 +9,9 @@
 
   console.assert(parentId, 'placeholder has no valid parent ID');
 
-  $: cardWidth = $positioning.card.width + 'px';
-  $: cardHeight = $positioning.card.height + 'px';
-  $: zShift = (level * $positioning.zShiftFactor) + 'px';
+  $: cardWidth = $positioning.card.width;
+  $: cardHeight = $positioning.card.height;
+  $: zShift = (level * $positioning.zShiftFactor);
   $: highlightDropZones = $display.highlightDropZones;
   $: sourceId = $display.sourceStackId;
 </script>

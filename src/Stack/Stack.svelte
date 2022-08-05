@@ -12,6 +12,9 @@
   export let top;
   export let left;
 
+  console.assert(Number.isInteger(top));
+  console.assert(Number.isInteger(left));
+
   let cards;
 
   $: width = getWidth(cards);
@@ -62,9 +65,9 @@
   }
 </style>
 
-<div class="stack" use:cssVariables={{top, left, width, height}}>
+<div id="{id}" class="stack" use:cssVariables={{top, left, width, height}}>
   {#each cards as cardId, i}
     <Card id={cardId} parentId={id} parentStoreType='stack' topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
-  <CardDropZone parentId={id} showAlways="{cards.length === 0}" level={cards.length} on:drop="{onDrop}" />
+  <CardDropZone parentId={id} showAlways={cards.length === 0} level={cards.length} on:drop="{onDrop}" />
 </div>

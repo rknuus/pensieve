@@ -29,5 +29,9 @@ Using the mouse for drag and drop operations (e.g. of cards) is an obvious choic
 ## Troubleshooting
 * When a boolean parameter passed to a Svelte component does not have the expected effect (e.g. `alwaysShow="false"`) check if the value is braced correctly: `alwaysShow="{false}"`. That's a tricky one, because a string might evaluate to a wrong value, while it prints the expected value in `$: console.log(alwaysShow)` expressions.
 
+## Stores
+* TODO(KNR): decide whether to leave the stores in the specific component directories or whether to centralize them
+* TODO(KNR): probably we should create a utils directory for code providing cross-cutting concerns
+
 ## References
 - Positioning in CSS by Eric A. Meyer

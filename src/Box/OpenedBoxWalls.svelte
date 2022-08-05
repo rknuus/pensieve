@@ -5,13 +5,15 @@
   export let cardCount;
   export let selected;
 
+  console.assert(Number.isInteger(cardCount));
+
   // For boxes with a small number of cards the box shape would look weird if the shape is directly
   // proportional to the number of cards. So always use a multiple of 64.
   $: capacity = 200 + Math.floor(cardCount / 100) * 100;
 
-  $: cardWidth = $positioning.card.width + 'px';
-  $: cardHeight = $positioning.card.height + 'px';
-  $: boxDepth = capacity + 'px';
+  $: cardWidth = $positioning.card.width;
+  $: cardHeight = $positioning.card.height;
+  $: boxDepth = capacity;
 
   $: cubeTop = cardHeight;
 </script>
