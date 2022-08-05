@@ -2,19 +2,23 @@ import { writable } from 'svelte/store';
 import { addToStore, updateItemInStore, removeItemFromStore } from '../helpers/store-helpers.js';
 
 const store = writable([
-    {
-      id: 'stackA',
-      cards: ['cardA', 'cardB'],
-    },
-    {
-      id: 'stackB',
-      cards: ['cardC'],
-    },
-    {
-      id: 'stackC',
-      cards: [],
-    },
-  ]);
+  {
+    id: 'inbox',
+    cards: ['c0', 'c1', 'c5'],
+  },
+  {
+    id: 'stackA',
+    cards: ['cardA', 'cardB'],
+  },
+  {
+    id: 'stackB',
+    cards: ['cardC'],
+  },
+  {
+    id: 'stackC',
+    cards: [],
+  },
+]);
 
 function addCard(cardId, targetId) {
   store.update(items => {

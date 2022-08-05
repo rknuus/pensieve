@@ -1,26 +1,41 @@
 <script>
-  import { cssVariables } from '../helpers/css-helpers.js';
   import ShelfBoard from './ShelfBoard.svelte';
-  import ShelfSide from './ShelfSide.svelte';
+  import ShelfSideBoard from './ShelfSideBoard.svelte';
+  import { cssVariables } from '../helpers/css-helpers.js';
+  import { onDestroy } from 'svelte';
+  import { shelfs } from './shelf-store.js';
 
   export let id;
   export let top;
   export let left;
   export let width;
   export let thickness;
-  export let boardCount;
   export let boardDistance;
   export let boardDepth;
 
-  $: height = Math.max(1, boardCount) * boardDistance;
+  let boards;
+  let height;
 
-  console.assert(Number.isInteger(boardCount));
   console.assert(Number.isInteger(thickness));
   console.assert(Number.isInteger(boardDistance));
   console.assert(Number.isInteger(boardDepth));
   console.assert(Number.isInteger(top));
   console.assert(Number.isInteger(left));
   console.assert(Number.isInteger(width));
+
+  const unsubscribeShelfs = shelfs.subscribe(items => {
+    const shelf = items.find(i => i.id === id);
+    console.assert(shelf, 'shelf with ID %s not found in shelf store', id);
+    boards = shelf.boards;
+
+    height = Math.max(1, boards.length) * boardDistance;
+  });
+
+  onDestroy(() => {
+    if (unsubscribeShelfs) {
+      unsubscribeShelfs();
+    }
+  });
 </script>
 
 <style>
@@ -36,19 +51,25 @@
 </style>
 
 <div class="shelf" id="{id}" use:cssVariables={{top, left, width, height}}>
-  <ShelfSide id="{id + 'Right'}" top={0} left={left + width} width={boardDepth} height={height}
+  <ShelfSideBoard id="{id + 'Right'}" top={0} left={left + width} width={boardDepth} height={height}
    thickness={thickness} />
 
-  <!-- borrowed from https://www.eternaldev.com/blog/5-ways-to-perform-for-loop-in-svelte-each-block/ -->
-  {#each Array(boardCount) as _, i}
-    <ShelfBoard id="{id + 'Board' + i}" top={i * 100} left={left} width={width}
-     thickness={thickness} boardDepth={boardDepth} boardDistance={boardDistance} />
-  {/each}
-
-  <ShelfBoard id="{id + 'Board' + boardCount}" top={boardCount * 100} left={left}
+  <ShelfBoard id="{id + 'BoardTop'}" top={0} left={left}
    width={width + thickness} thickness={thickness} boardDepth={boardDepth}
-   boardDistance={boardDistance} />
+   boardDistance={boardDistance}
+   noBoxes={true} />
 
-  <ShelfSide id="{id + 'Left'}" top={0} left={left} width={boardDepth} height={height}
+  {#if boards.length === 0}
+    <ShelfBoard id="{id + 'BoardBottom'}" top={(boards.length + 1) * 100} left={left}
+     width={width + thickness} thickness={thickness} boardDepth={boardDepth}
+     boardDistance={boardDistance} slotCount={8} />
+  {:else}
+    {#each boards as boardId, i}
+      <ShelfBoard id="{boardId}" top={(i + 1) * 100} left={left} width={i === boards.length - 1 ? width + thickness : width}
+       thickness={thickness} boardDepth={boardDepth} boardDistance={boardDistance} slotCount={8} />
+    {/each}
+  {/if}
+
+  <ShelfSideBoard id="{id + 'Left'}" top={0} left={left} width={boardDepth} height={height}
    thickness={thickness} />
 </div>

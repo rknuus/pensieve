@@ -3,6 +3,18 @@ import { addToStore, updateItemInStore, removeItemFromStore } from '../helpers/s
 
 const store = writable([
   {
+    id: 'c0',
+    renderedContent: '<p>demo card 1',
+  },
+  {
+    id: 'c1',
+    renderedContent: '<p>demo card 2',
+  },
+  {
+    id: 'c5',
+    renderedContent: '<p>demo card 6',
+  },
+  {
     id: 'cardA',
     renderedContent: '<p>Hello, card world</p>',
   },
