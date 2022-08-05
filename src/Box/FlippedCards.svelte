@@ -9,9 +9,10 @@
   export let top;
   export let left;
 
-  let cards;
+  console.assert(Number.isInteger(top));
+  console.assert(Number.isInteger(left));
 
-  $: cardHeight = $positioning.card.height + 'px';
+  let cards;
 
   const dispatch = createEventDispatcher();
 

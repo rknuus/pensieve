@@ -15,11 +15,14 @@
   export let left;
   export let selected;
 
+  console.assert(Number.isInteger(top));
+  console.assert(Number.isInteger(left));
+
   let openCards;
   let flippedCards;
 
   $: allCards = openCards.concat(flippedCards);
-  $: lowerTop = parseInt(top) + getHeight(allCards) + getCardOffset(allCards.length);
+  $: lowerTop = top + getHeight(allCards) + getCardOffset(allCards.length);
 
   console.assert(id, 'box has no valid ID');
 
@@ -102,9 +105,9 @@
 </style>
 
 <div class="box" use:cssVariables={{top, left}} on:dblclick="{onDoubleclick}">
-  <OpenCards id="{id}" top="{top}" left="{left}" on:drop="{onDrop}" />
-  <FlippedCards id="{id}" top="{lowerTop}" left="{left}" />
-  <OpenedBoxWalls selected={selected} top="{getHeight(allCards)}" left="0" cardCount="{allCards.length}" />
+  <OpenCards id="{id}" top={top} left={left} on:drop="{onDrop}" />
+  <FlippedCards id="{id}" top={lowerTop} left={left} />
+  <OpenedBoxWalls selected={selected} top={getHeight(allCards)} left={0} cardCount={allCards.length} />
 </div>
 
 <svelte:window on:keydown|preventDefault={onKeyDown} />

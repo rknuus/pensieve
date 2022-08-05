@@ -13,6 +13,8 @@
   export let level;
   export let flipped = false;
 
+  console.assert(Number.isInteger(level));
+
   let renderedContent;
 
   const dispatch = createEventDispatcher();
@@ -26,9 +28,9 @@
     renderedContent = card.renderedContent;
   });
 
-  $: cardWidth = $positioning.card.width + 'px';
-  $: cardHeight = $positioning.card.height + 'px';
-  $: zShift = (level * $positioning.zShiftFactor) + 'px';
+  $: cardWidth = $positioning.card.width;
+  $: cardHeight = $positioning.card.height;
+  $: zShift = (level * $positioning.zShiftFactor);
   $: dragEnabled = draggable && topCard;
 
   onDestroy(() => {

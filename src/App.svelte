@@ -22,11 +22,11 @@
 </style>
 
 {#each stackIds as id, i}
-  <Stack id="{id}" top="50" left="{50 + i * 400}" />
+  <Stack id="{id}" top={50} left={50 + i * 400} />
 {/each}
 
 {#each boxIds as id, i}
-  <Box id="{id}" selected={id === selectedBox} top="300" left="{50 + i * 400}" on:selected="{onBoxSelected}" />
+  <Box id="{id}" selected={id === selectedBox} top={300} left={50 + i * 400} on:selected="{onBoxSelected}" />
 {/each}
 
 <Shelf id="shelfA" boardCount={4} thickness={10} boardDistance={100} boardDepth={250} top={650} left={50} width={720} />
