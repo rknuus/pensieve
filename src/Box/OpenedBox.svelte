@@ -97,10 +97,7 @@
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
     top: var(--top);
     left: var(--left);
-
     transform-style: preserve-3d;
-    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
-    transform-origin: top center;
   }
 </style>
 

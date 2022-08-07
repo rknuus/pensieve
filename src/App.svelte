@@ -20,16 +20,26 @@
 </script>
 
 <style>
+  .app {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    transform-style: preserve-3d;
+    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
+    transform-origin: top center;
+  }
 </style>
 
-{#each stackIds as id, i}
-  <Stack id="{id}" top={50} left={50 + i * 400} />
-{/each}
+<div class="app">
+  {#each stackIds as id, i}
+    <Stack id="{id}" top={50} left={50 + i * 400} />
+  {/each}
 
-{#each boxIds as id, i}
-  <OpenedBox id="{id}" selected={id === selectedBox} top={300} left={50 + i * 400} on:selected="{onBoxSelected}" />
-{/each}
+  {#each boxIds as id, i}
+    <OpenedBox id="{id}" selected={id === selectedBox} top={300} left={50 + i * 400} on:selected="{onBoxSelected}" />
+  {/each}
 
 <Shelf id="shelfA" boardCount={4} thickness={10} boardDistance={100} boardDepth={250} top={650} left={50} width={720} />
+  <ClosedBox id="BoxZ" top={650} left={50} height={75} width={75} depth={150} />
 
-<ClosedBox id="BoxZ" top={650} left={1020} height={75} width={75} depth={150} />
+</div>

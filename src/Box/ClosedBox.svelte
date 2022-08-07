@@ -28,8 +28,6 @@
     width: var(--width);
     z-index: -1;
     transform-style: preserve-3d;
-    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
-    transform-origin: top center;
   }
 </style>
 

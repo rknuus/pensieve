@@ -59,9 +59,6 @@
     width: var(--width);
 
     transform-style: preserve-3d;
-    /* TODO(KNR): centralize perspective and origin in store */
-    transform: perspective(50cm) rotateX(-2deg) rotateY(20deg);
-    transform-origin: top center;
   }
 </style>
 
