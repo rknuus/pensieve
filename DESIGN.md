@@ -22,6 +22,9 @@ To achieve stacking effects we use 3D CSS transformations. By translating elemen
 
 When combined with perspective settings from a slight top-left angle on the parent containers, the visualization looks quite realistic.
 
+### Scaling
+At this early stage we don't bother to support devices with different screen sizes and resolutions. That's why we currently do not support scaling. In order to support scaling we would have to replace all hard coded sizes (e.g. the index card lines in Card.svelte) and introduce a scale factor in a store.
+
 ## Interacting
 ### Mouse vs. keyboard
 Using the mouse for drag and drop operations (e.g. of cards) is an obvious choice. The question is whether all other interactions should also be controlled by the mouse or by the keyboard. The reason why I opted for the keyboard is simplicity. Because it allowed me to focus on implementing basic functionality and not having to worry about the complexity of distinguishing similar but different interactions, e.g. whether a card in a box should be flipped or dragged.
@@ -32,6 +35,9 @@ Using the mouse for drag and drop operations (e.g. of cards) is an obvious choic
 ## Stores
 * TODO(KNR): decide whether to leave the stores in the specific component directories or whether to centralize them
 * TODO(KNR): probably we should create a utils directory for code providing cross-cutting concerns
+
+## Testing
+The project currently has the maturity of a prototype. Quite some work is of explorative nature. That's why testing would slow us down too much. Eventually we will rewrite the code. At the same time we will cover the code by tests.
 
 ## References
 - Positioning in CSS by Eric A. Meyer
