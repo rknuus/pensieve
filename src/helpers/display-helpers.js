@@ -1,7 +1,9 @@
 const stack_offset_factor = 5;
 
-const pixelUnits = ['top', 'left', 'bottom', 'right', 'width', 'height', 'thickness', 'boardDepth',
-  'boardDistance', 'cardWidth', 'cardHeight', 'boxDepth', 'cubeTop', 'zShift'];
+const pixelUnits = ['top', 'left', 'bottom', 'right', 'width', 'height', 'thickness', 'depth',
+  'boardDepth', 'boardDistance', 'cardWidth', 'cardHeight', 'boxDepth', 'cubeTop', 'zShift',
+  'bodyTop', 'bodyLeft', 'bodyWidth', 'bodyHeight', 'bodyDepth',
+  'labelTop', 'labelLeft', 'labelWidth', 'labelHeight', 'labelBorderRadius'];
 
 export function getCardOffset(stackLevel) {
   return stackLevel * stack_offset_factor;

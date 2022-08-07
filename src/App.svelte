@@ -1,5 +1,6 @@
 <script>
-  import Box from './Box/Box.svelte';
+  import ClosedBox from './Box/ClosedBox.svelte';
+  import OpenedBox from './Box/OpenedBox.svelte';
   import Shelf from './Shelf/Shelf.svelte';
   import Stack from './Stack/Stack.svelte';
   import { boxes } from './Box/box-store.js';
@@ -26,7 +27,9 @@
 {/each}
 
 {#each boxIds as id, i}
-  <Box id="{id}" selected={id === selectedBox} top={300} left={50 + i * 400} on:selected="{onBoxSelected}" />
+  <OpenedBox id="{id}" selected={id === selectedBox} top={300} left={50 + i * 400} on:selected="{onBoxSelected}" />
 {/each}
 
 <Shelf id="shelfA" boardCount={4} thickness={10} boardDistance={100} boardDepth={250} top={650} left={50} width={720} />
+
+<ClosedBox id="BoxZ" top={650} left={1020} height={75} width={75} depth={150} />
