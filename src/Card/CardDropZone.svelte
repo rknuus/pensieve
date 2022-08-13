@@ -12,8 +12,8 @@
   $: cardWidth = $positioning.card.width;
   $: cardHeight = $positioning.card.height;
   $: zShift = (level * $positioning.zShiftFactor);
-  $: highlightDropZones = $display.highlightDropZones;
-  $: sourceId = $display.sourceStackId;
+  $: highlightCardDropZones = $display.highlightCardDropZones;
+  $: sourceId = $display.cardSourceId;
 </script>
 
 <style>
@@ -30,7 +30,7 @@
 }
 </style>
 
-{#if showAlways || (highlightDropZones && sourceId !== parentId)}
+{#if showAlways || (highlightCardDropZones && sourceId !== parentId)}
   <div class="placeholdercard" on:dragover|preventDefault on:drop|preventDefault use:cssVariables={{zShift, cardWidth, cardHeight}}>
   </div>
 {/if}

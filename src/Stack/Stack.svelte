@@ -47,7 +47,7 @@
     const sourceStore = getStore(eventData.sourceStore);
     sourceStore.removeCard(cardId, eventData.sourceId);
     stacks.addCard(cardId, id);
-    display.stopDragging();
+    display.stopDraggingCard();
     console.debug('dropped item ' + cardId + ' onto target stack ' + id);
   }
 </script>

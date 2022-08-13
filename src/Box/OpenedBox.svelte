@@ -86,7 +86,7 @@
     const sourceStore = getStore(eventData.sourceStore);
     sourceStore.removeCard(cardId, eventData.sourceId);
     boxes.addCard(cardId, id);
-    display.stopDragging();
+    display.stopDraggingCard();
     console.debug('dropped item ' + cardId + ' onto target box ' + id);
   }
 </script>

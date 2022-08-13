@@ -40,17 +40,16 @@
   function onDragStart(event) {
     // setting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
     // TODO(KNR): do we sill need parentId?
-    // TODO(KNR): does it work to pass a store object?
     const data = {cardId: id, sourceId: parentId, sourceStore: parentStoreType};
     event.dataTransfer.setData('text/plain', JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
-    console.debug('starting to drag item ' + id + ' from source stack ' + parentId);
-    display.startDragging(parentId);
+    console.debug('starting to drag card ' + id + ' from source stack ' + parentId);
+    display.startDraggingCard(parentId);
   }
 
   function onDragEnd(event) {
-    console.debug('stop dragging item ' + id);
-    display.stopDragging();
+    console.debug('stop dragging card ' + id);
+    display.stopDraggingCard();
     // Apparently we don't have to clear the transfer data
   }
 </script>
