@@ -14,6 +14,7 @@ const store = writable([
     id: 'c5',
     renderedContent: '<p>demo card 6',
   },
+  // OLD
   {
     id: 'cardA',
     renderedContent: '<p>Hello, card world</p>',
@@ -26,6 +27,7 @@ const store = writable([
     id: 'cardC',
     renderedContent: '<p>Lappi, mach d\'Auge uuf</p>',
   },
+  // END OLD
   ]);
 
 export const cards = {

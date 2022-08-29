@@ -9,8 +9,8 @@
 
   console.assert(parentId, 'placeholder has no valid parent ID');
 
-  $: cardWidth = $positioning.card.width;
-  $: cardHeight = $positioning.card.height;
+  $: cardWidth = $positioning.card.width - 2;  // subtract the border
+  $: cardHeight = $positioning.card.height - 2;
   $: zShift = (level * $positioning.zShiftFactor);
   $: highlightCardDropZones = $display.highlightCardDropZones;
   $: sourceId = $display.cardSourceId;
@@ -23,6 +23,7 @@
 
   position: absolute;
 
+  transform-style: preserve-3d;
   transform: translateZ(var(--zShift));
 
   border-style: dotted;

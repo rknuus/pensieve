@@ -7,6 +7,23 @@ const store = writable([
     cards: ['c0', 'c1', 'c5'],
   },
   {
+    id: 's0.inbox',
+    cards: [],
+  },
+  {
+    id: 's1.inbox',
+    cards: [],
+  },
+  {
+    id: 's2.inbox',
+    cards: [],
+  },
+  {
+    id: 's3.inbox',
+    cards: [],
+  },
+  // OLD
+  {
     id: 'stackA',
     cards: ['cardA', 'cardB'],
   },
@@ -18,6 +35,7 @@ const store = writable([
     id: 'stackC',
     cards: [],
   },
+  // END OLD
 ]);
 
 function addCard(cardId, targetId) {

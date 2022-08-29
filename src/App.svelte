@@ -1,11 +1,21 @@
 <script>
+  import BackButton from './Navigation/BackButton.svelte';
+  import ShelfFront from './Shelf/ShelfFront.svelte';
+  import ShelfSide from './Shelf/ShelfSide.svelte';
+  import Stack from './Stack/Stack.svelte';
+  import ViewIn3D from './helpers/ViewIn3D.svelte';
   import { library } from './Library/library-store.js';
   import { view } from './View/view-store.js';
-  import Stack from './Stack/Stack.svelte';
-  import ShelfSide from './Shelf/ShelfSide.svelte';
 
   $: current_library = $library;
   $: current_view = $view.current;
+  $: selected = $view.selected;
+
+  function openShelf(event) {
+    const selecteShelf = event.detail;
+    console.log('selected shelf ' + selecteShelf);
+    view.enter('shelf', selecteShelf);
+  }
 
   // OLD
   import ClosedBox from './Box/ClosedBox.svelte';
@@ -38,7 +48,7 @@
 
   .old {
     position: absolute;
-    top: 200px;
+    top: 700px;
     left: 50px;
     transform-style: preserve-3d;
     transform: /*perspective(50cm)*/ rotateX(-7deg) rotateY(7deg);
@@ -46,16 +56,22 @@
   }
 </style>
 
-<div class="app">
+<div class="app" draggable={false}>
   {#if current_view === 'library'}
-    <!-- TODO(KNR): we need a 3D effect, otherwise the stack height is not visible -->
-    <Stack id="inbox" top={20} left={20} />
+    <!-- TODO(KNR): share 3D effect for inbox and the inboxes of all shelfs -->
+    <ViewIn3D perspective="perspective(50cm)" rotateX="-2deg" rotateY="2deg" transform_origin="top center">
+      <Stack id="inbox" top_px={20 + 600 - 1.5 * 112} left_px={20} />
+    </ViewIn3D>
 
     {#each current_library.shelfs as id, i}
-      <ShelfSide id={id} top={20} left={80 + i * 80} />
+      <ShelfSide id={id} top_px={20} left_px={400 + i * 400} width_px={220} height_px={600} on:openedShelf={openShelf} />
     {/each}
   {:else if current_view === 'shelf'}
-    <p>show shelf</p>
+    <ViewIn3D perspective="perspective(50cm)" rotateX="-2deg" rotateY="2deg" transform_origin="top center">
+      <Stack id="inbox" top_px={20 + 600 - 1.5 * 112} left_px={20} />
+      <BackButton top_px={20 + 112} left_px={20} width_px={200} />
+      <ShelfFront id="{selected}" thickness={10} boardDistance={100} boardDepth={150} top={20} left={200} width={720} />
+    </ViewIn3D>
   {:else if current_view === 'board'}
     <p>show board</p>
   {:else if current_view === 'box'}
