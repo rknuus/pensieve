@@ -39,6 +39,10 @@ export function getWidth(cards) {
 }
 
 export function getUnit(variable) {
+  if (variable.endsWith('_px')) {
+    return 'px';
+  }
+  // TODO(KNR): after migrating to postfix remove the following if-statement and the pixelUnit const
   if (pixelUnits.includes(variable)) {
     return 'px';
   }
