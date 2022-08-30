@@ -11,16 +11,19 @@
   export let id;
   export let top;
   export let left;
+  export let top_px;
+  export let left_px;
 
-  console.assert(Number.isInteger(top));
-  console.assert(Number.isInteger(left));
+  console.assert(id, 'stack has no valid ID');
+  console.assert(Number.isInteger(top_px) || Number.isInteger(top));
+  console.assert(Number.isInteger(left_px) || Number.isInteger(left));
 
   let cards;
 
-  $: width = getWidth(cards);
-  $: height = getHeight(cards);
-
-  console.assert(id, 'stack has no valid ID');
+  $: width_px = getWidth(cards);
+  $: height_px = getHeight(cards);
+  $: top_px = top_px || top;
+  $: left_px = left_px || left;
 
   const dispatch = createEventDispatcher();
 
@@ -53,16 +56,16 @@
   .stack {
     position: absolute;
     /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-    top: var(--top);
-    left: var(--left);
-    height: var(--height);
-    width: var(--width);
+    top: var(--top_px);
+    left: var(--left_px);
+    height: var(--height_px);
+    width: var(--width_px);
 
     transform-style: preserve-3d;
   }
 </style>
 
-<div id="{id}" class="stack" use:cssVariables={{top, left, width, height}}>
+<div id="{id}" class="stack" use:cssVariables={{top_px, left_px, width_px, height_px}}>
   {#each cards as cardId, i}
     <Card id={cardId} parentId={id} parentStoreType='stack' topCard={i === cards.length - 1} draggable={true} level={i} />
   {/each}
