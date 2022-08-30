@@ -22,7 +22,6 @@
     left: var(--left);
     width: var(--width);
     height: var(--depth);
-    z-index: -1;
     transform-style: preserve-3d;
   }
 

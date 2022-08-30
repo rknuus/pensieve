@@ -1,6 +1,6 @@
 <script>
   import { cards } from './card-store.js';
-  import { createEventDispatcher, onDestroy } from 'svelte';
+  import { onDestroy } from 'svelte';
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
   import { positioning } from '../helpers/positioning-store.js';
@@ -16,8 +16,6 @@
   console.assert(Number.isInteger(level));
 
   let renderedContent;
-
-  const dispatch = createEventDispatcher();
 
   console.assert(id, 'card has no valid ID');
   console.assert(parentId, 'card has no valid parent ID');
