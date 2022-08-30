@@ -1,6 +1,8 @@
 <script>
   import BoxBody from './BoxBody.svelte';
   import BoxLid from './BoxLid.svelte';
+  import { boxes } from './box-store.js';
+  import { createEventDispatcher, onDestroy } from 'svelte';
   import { cssVariables } from '../helpers/css-helpers.js';
   import { display } from '../helpers/display-store.js';
 
@@ -11,16 +13,52 @@
   export let height;
   export let depth;
 
+  const dispatch = createEventDispatcher();
   const parentId = 81;  // TODO(KNR): replace by property
   const dragEnabled = true;
 
   $: lidHeight = height * 0.1;
-
   $: bodyHeight = height * 0.98;
   $: bodyTop = height - bodyHeight;
   $: bodyWidth = width * 0.98;
   $: bodyLeft = width - bodyWidth;
   $: bodyDepth = depth * 0.98;
+
+  let name;
+  let openCards;
+  let flippedCards;
+
+  const unsubscribeBoxes = boxes.subscribe(items => {
+    const box = items.find(i => i.id === id);
+    console.assert(box, 'flipped cards with ID %s not found in box store', id);
+    name = box.name;
+    openCards = box.cards;
+    flippedCards = box.flippedCards;
+  });
+
+  onDestroy(() => {
+    if (unsubscribeBoxes) {
+      unsubscribeBoxes();
+    }
+  });
+
+  function onClick(event) {
+    // distinction of single and double click is borrowed from https://stackoverflow.com/a/53939059
+    if (event.detail === 1) {  // single click
+      dispatch('opened', id);
+    } else if (event.detail === 2) {  // double click
+      // dispatch('opened', id);
+      dispatch('selected', id);
+    }
+  }
+
+  // function onSingleclick(event) {
+  //   dispatch('opened', id);
+  // }
+
+  // function onDoubleclick(event) {
+  //   dispatch('selected', id);
+  // }
 
   function onDragStart(event) {
     // setting data is borrowed from https://svelte.dev/repl/b225504c9fea44b189ed5bfb566df6e6?version=3.48.0
@@ -51,7 +89,7 @@
   }
 </style>
 
-<div id={id} class="closed-box" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}" use:cssVariables={{top, left, width, height}}>
+<div id={id} class="closed-box" class:draggable="{dragEnabled}" draggable={dragEnabled} on:dragstart="{onDragStart}" on:dragend="{onDragEnd}" on:click="{onClick}" use:cssVariables={{top, left, width, height}}>
   <BoxLid top={0} left={0} width={width} height={lidHeight} depth={depth} />
-  <BoxBody top={bodyTop} left={bodyLeft} width={bodyWidth} height={bodyHeight} depth={bodyDepth} />
+  <BoxBody name="{name}" top={bodyTop} left={bodyLeft} width={bodyWidth} height={bodyHeight} depth={bodyDepth} />
 </div>

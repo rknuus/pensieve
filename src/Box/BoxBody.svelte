@@ -1,15 +1,17 @@
 <script>
   import { cssVariables } from '../helpers/css-helpers.js';
 
+  export let name;
   export let top;
   export let left;
   export let width;
   export let height;
   export let depth;
+  export let selected = false;
 
-  $: labelTop = height * 0.3;
-  $: labelWidth = width * 0.4;
-  $: labelHeight = height * 0.3;
+  $: labelTop = height * 0.25;
+  $: labelWidth = width * 0.5;
+  $: labelHeight = height * 0.6;
   $: labelLeft = (width - labelWidth) / 2;
   $: labelBorderRadius = labelWidth * 0.12;
 </script>
@@ -55,7 +57,7 @@
     height: var(--height);
     transform: translateZ(var(--depth));
     /*transform-style: preserve-3d;*/
-    border-style: none none none solid;
+    border-style: solid none none solid;
     border-color: white;
     border-width: 1px;
   }
@@ -67,7 +69,7 @@
     height: var(--height);
     transform: rotateY(-90deg);
     transform-origin: center left;
-    border-style: none solid none none;
+    border-style: solid solid none none;
     border-color: white;
     border-width: 1px;
   }
@@ -91,14 +93,22 @@
     background-color: white;
     border-radius: var(--labelBorderRadius);
   }
+
+  .box-label p {
+    margin: 5px;
+  }
+
+  .selected {
+    background: rgba(0,0,70,0.7);
+  }
 </style>
 
 <div class="body-box" use:cssVariables={{top, left, width, height}}>
-  <div class="back wall" use:cssVariables={{top, left, width, height, depth}} />
-  <div class="right wall" use:cssVariables={{top, left, width, height, depth}} />
-  <div class="front wall" use:cssVariables={{top, left, width, height, depth}}>
-    <div class="box-label" use:cssVariables={{labelTop, labelLeft, labelWidth, labelHeight, labelBorderRadius}} />    
+  <div class="back wall" class:selected use:cssVariables={{top, left, width, height, depth}} />
+  <div class="right wall" class:selected use:cssVariables={{top, left, width, height, depth}} />
+  <div class="front wall" class:selected use:cssVariables={{top, left, width, height, depth}}>
+    <div class="box-label" use:cssVariables={{labelTop, labelLeft, labelWidth, labelHeight, labelBorderRadius}}><p>{name}</p></div>
   </div>
-  <div class="left wall" use:cssVariables={{top, left, width, height, depth}} />
-  <div class="bottom wall" use:cssVariables={{top, left, width, height, depth}} />
+  <div class="left wall" class:selected use:cssVariables={{top, left, width, height, depth}} />
+  <div class="bottom wall" class:selected use:cssVariables={{top, left, width, height, depth}} />
 </div>

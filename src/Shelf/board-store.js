@@ -3,23 +3,23 @@ import { addToStore, updateItemInStore, removeItemFromStore } from '../helpers/s
 
 const store = writable([
     {
-      id: 'shelfA.1',
+      id: 's0.b1',
       boxes: ['boxA', 'boxB', 'boxC'],
     },
     {
-      id: 'shelfA.2',
+      id: 's0.b2',
       boxes: ['boxD', 'boxE'],
     },
     {
-      id: 'shelfA.3',
+      id: 's0.b3',
       boxes: [],
     },
     {
-      id: 'shelfB.1',
+      id: 's1.b1',
       boxes: ['boxF'],
     },
     {
-      id: 'shelfB.2',
+      id: 's1.b2',
       boxes: ['boxG', 'boxH', 'boxI', 'boxJ', 'boxK'],
     },
   ]);

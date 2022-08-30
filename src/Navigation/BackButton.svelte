@@ -21,4 +21,4 @@
   }
 </style>
 
-<img class="back-button" src="media/fire_exit.svg" use:cssVariables={{top_px, left_px, width_px}} on:dblclick={onDoubleClick} />
+<img class="back-button" src="media/fire_exit.svg" alt="back button" use:cssVariables={{top_px, left_px, width_px}} on:dblclick={onDoubleClick} />

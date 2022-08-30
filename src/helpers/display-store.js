@@ -5,6 +5,7 @@ const displayStore = writable({
   cardSourceId: null,
   highlightBoxDropZones: false,
   boxSourceId: null,
+  selectedBox: null,
 });
 
 export const display = {
@@ -42,4 +43,12 @@ export const display = {
       return updatedData;
     });
   },
+  selectBox: (boxId) => {
+    displayStore.update(data => {
+      const updatedData = {...data};
+      console.log('updating selected box to ' + boxId);
+      updatedData.selectedBox = boxId;
+      return updatedData;
+    });
+  }
 };

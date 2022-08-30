@@ -4,18 +4,75 @@ import { addToStore, updateItemInStore, removeItemFromStore } from '../helpers/s
 const store = writable([
     {
       id: 'boxA',
+      name: 'Refactoring',
       cards: ['cardA'],
       flippedCards: ['cardB', 'cardC'],
     },
     {
       id: 'boxB',
+      name: 'JavaScript',
       cards: ['cardB', 'cardC'],
       flippedCards: [],
     },
     {
       id: 'boxC',
+      name: 'TypeScript',
       cards: [],
       flippedCards: [],
+    },
+    {
+      id: 'boxD',
+      name: 'DDD',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxE',
+      name: 'C++',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxF',
+      name: 'Carbon',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxG',
+      name: 'Rust',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxH',
+      name: 'Julia',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxI',
+      name: 'Testing',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxJ',
+      name: 'Zettelkasten method',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxK',
+      name: 'Bird watching',
+      cards: [],
+      flippedCards: [],
+    },
+    {
+      id: 'boxKappa',
+      name: 'History 21st century',
+      cards: ['cardA'],
+      flippedCards: ['cardC'],
     },
   ]);
 

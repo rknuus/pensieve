@@ -1,4 +1,5 @@
 <script>
+  import ShelfLabel from './ShelfLabel.svelte';
   import Stack from '../Stack/Stack.svelte';
   import ViewIn3D from '../helpers/ViewIn3D.svelte';
   import { createEventDispatcher } from 'svelte';
@@ -18,6 +19,8 @@
   const shelf_inbox_left_px = 10;
   const dispatch = createEventDispatcher();
 
+  $: sign_width_px = width_px * 0.7;  // TODO(KNR): take from a store
+  $: sign_height_px = height_px * 0.1;
   $: shelf = getShelf(id, $shelfs);
 
   function getShelf(id, items) {
@@ -48,35 +51,12 @@
 
     cursor: pointer;
   }
-
-  .shelf-sign {
-    position: absolute;
-    /* borrowed from https://svelte.dev/repl/ccdb128d448c4b92babeaccb4be35567?version=3.46.2 */
-    top: var(--sign_top_px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 70%;
-    height: 10%;
-    transform-style: preserve-3d;
-
-    box-shadow: 1px 1px 3px rgba(0,0,0,.50);
-    background-color: white;  /* avoid cards being transparent */
-
-    user-select: none;  /* Prevent selection of text when double-clicking the parent shelf */
-  }
-
-  .shelf-sign p {
-    margin: 10px;
-    color: black;
-  }
 </style>
 
 <ViewIn3D perspective="perspective(50cm)" rotateX="0deg" rotateY="2deg" transform_origin="top center">
   <!-- TODO(KNR): CONTINUE HERE: pass id in event data to identify the shelf being "opened" -->
   <div class="shelf-side" id={id} use:cssVariables={{top_px, left_px, width_px, height_px}} on:dblclick={onDoubleClick}>
-    <div class="shelf-sign" id="{id}.sign" use:cssVariables={{sign_top_px}}>
-      <p>{shelf.name}</p>
-    </div>
+    <ShelfLabel id="{id}.sign" text="{shelf.name}" top_px={sign_top_px} width_px={sign_width_px} height_px={sign_height_px} />
     <Stack id="{id}.inbox" top={shelf_inbox_top_px} left={shelf_inbox_left_px} />
   </div>
 </ViewIn3D>

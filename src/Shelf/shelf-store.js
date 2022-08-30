@@ -5,17 +5,17 @@ const store = writable([
   {
     id: 's0',
     name: 'non-fiction / IT shelf',
-    boards: ['s0.b1', 's0.b2', 's0.b3', 's0.b4'],
+    boards: ['s0.b1', 's0.b2', 's0.b3'],
   },
   {
     id: 's1',
     name: 'non-fiction / non-IT shelf',
-    boards: ['s1.b1', 's1.b2', 's1.b3', 's1.b4'],
+    boards: ['s1.b1', 's1.b2', 's1.b3'],
   },
   {
     id: 's2',
     name: 'fiction shelf',
-    boards: ['s2.b1', 's2.b2', 's2.b3', 's2.b4'],
+    boards: ['s2.b1', 's2.b2', 's2.b3'],
   },
   {
     id: 's3',
